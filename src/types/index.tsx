@@ -48,6 +48,8 @@ interface PreviewFrameProps {
     isLandscape: boolean;
     theme: ThemeColors;
     scale: number;
+    loading: boolean;
+    previewUrl: string;
 }
 
 export type { ControlPanelProps, Device, DeviceButtonProps, DeviceCategory, PreviewFrameProps, ThemeColors };

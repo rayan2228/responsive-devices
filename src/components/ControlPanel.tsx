@@ -35,7 +35,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
       {scale < 1 && (
         <div className="flex items-center gap-2">
           <span className="text-xs text-orange-500 font-medium">
-            Scaled: {Math.round(scale * 100)}%
+            Scaled: {scale}%
           </span>
         </div>
       )}

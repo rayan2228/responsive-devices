@@ -1,4 +1,4 @@
-import { ExternalLink, Globe, Moon, Sun, } from "lucide-react";
+import { ExternalLink, Globe, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 import { devices, themes } from "../data";
 import type { Device, DeviceCategory, } from "../types";
@@ -21,6 +21,10 @@ const getResponsiveScale = (deviceWidth: number, containerWidth: number): number
     return Math.max(scale, minScale);
 };
 const ResponsiveContainer: React.FC = () => {
+    const [url, setUrl] = useState<string>("");
+    const [previewUrl, setPreviewUrl] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
     const [isDark, setIsDark] = useState<boolean>(false);
     const [selectedDevice, setSelectedDevice] = useState<Device>(devices[0]);
     const [isLandscape, setIsLandscape] = useState<boolean>(false);
@@ -54,6 +58,34 @@ const ResponsiveContainer: React.FC = () => {
             gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
         }
     ];
+    const handlePreview = async () => {
+        if (!url.trim()) {
+            setError("Please enter a URL");
+            return;
+        }
+
+        let formattedUrl = url.trim();
+        if (!formattedUrl.startsWith("http://") && !formattedUrl.startsWith("https://")) {
+            formattedUrl = "https://" + formattedUrl;
+        }
+
+        try {
+            new URL(formattedUrl);
+            setError("");
+            setLoading(true);
+            setPreviewUrl(formattedUrl);
+            setTimeout(() => setLoading(false), 1000);
+        } catch {
+            setError("Please enter a valid URL");
+        }
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            handlePreview();
+        }
+    };
+
 
     return (
         <div className={`min-h-screen transition-all duration-500 ${currentTheme.background} relative overflow-hidden`}>
@@ -99,6 +131,9 @@ const ResponsiveContainer: React.FC = () => {
                     <div className="flex flex-col sm:flex-row gap-4">
                         <div className="flex-1">
                             <input
+                                value={url}
+                                onChange={(e) => setUrl(e.target.value)}
+                                onKeyDown={handleKeyPress}
                                 type="url"
                                 placeholder="Enter your website URL (e.g., example.com)"
                                 className={`w-full px-6 py-4 rounded-xl border-2 text-lg transition-all duration-300 
@@ -107,9 +142,11 @@ const ResponsiveContainer: React.FC = () => {
                                         : 'bg-white/90 border-slate-200/60 text-slate-800 placeholder-slate-400 focus:border-blue-400 focus:bg-white'
                                     }`}
                             />
+                            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                         </div>
-                        <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap">
-                            Load Preview
+                        <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap" onClick={handlePreview}
+                            disabled={loading}>
+                            {loading ? "Loading..." : "Preview"}
                         </button>
                     </div>
                 </section>
@@ -176,16 +213,22 @@ const ResponsiveContainer: React.FC = () => {
                             <span>Open in New Tab</span>
                         </button>
                     </div>
+                    {
+                        previewUrl && (
+                            <PreviewFrame
+                                device={selectedDevice}
+                                isLandscape={isLandscape}
+                                theme={currentTheme}
+                                scale={scale}
+                                loading={loading}
+                                previewUrl={previewUrl}
+                            />
 
-                    <PreviewFrame
-                        device={selectedDevice}
-                        isLandscape={isLandscape}
-                        theme={currentTheme}
-                        scale={scale}
-                    />
+                        )
+                    }
                 </section>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 
