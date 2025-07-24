@@ -1,3 +1,5 @@
+import type { DeviceButtonProps } from "../types";
+
 const DeviceButton: React.FC<DeviceButtonProps> = ({
     device,
     isSelected,
