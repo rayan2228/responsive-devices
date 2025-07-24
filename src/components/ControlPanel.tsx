@@ -1,3 +1,6 @@
+import { RotateCcw } from "lucide-react";
+import type { ControlPanelProps } from "../types";
+
 const ControlPanel: React.FC<ControlPanelProps> = ({
   theme,
   isLandscape,
