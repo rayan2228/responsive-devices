@@ -26,5 +26,29 @@ interface ThemeColors {
     };
 }
 
-export type { Device, DeviceCategory, ThemeColors };
+
+interface DeviceButtonProps {
+    device: Device;
+    isSelected: boolean;
+    onClick: (device: Device) => void;
+    theme: ThemeColors;
+    size?: 'sm' | 'md' | 'lg';
+}
+
+interface ControlPanelProps {
+    theme: ThemeColors;
+    isLandscape: boolean;
+    onToggleLandscape: () => void;
+    selectedDevice: Device;
+    scale: number;
+}
+
+interface PreviewFrameProps {
+    device: Device;
+    isLandscape: boolean;
+    theme: ThemeColors;
+    scale: number;
+}
+
+export type { ControlPanelProps, Device, DeviceButtonProps, DeviceCategory, PreviewFrameProps, ThemeColors };
 
