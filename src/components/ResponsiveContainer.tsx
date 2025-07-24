@@ -25,12 +25,15 @@ const ResponsiveContainer: React.FC = () => {
     const [previewUrl, setPreviewUrl] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
-    const [isDark, setIsDark] = useState<boolean>(false);
+    const [isDark, setIsDark] = useState<boolean>(
+        localStorage.getItem("theme") === null ? false : JSON.parse(localStorage.getItem("theme") ?? "")
+    );
     const [selectedDevice, setSelectedDevice] = useState<Device>(devices[0]);
     const [isLandscape, setIsLandscape] = useState<boolean>(false);
     const [showAllDevices, setShowAllDevices] = useState<boolean>(false);
 
     const currentTheme = themes[isDark ? 'dark' : 'light'];
+
 
     const getDevicesByCategory = (category: DeviceCategory): Device[] => {
         return devices.filter(device => device.category === category);
@@ -58,7 +61,8 @@ const ResponsiveContainer: React.FC = () => {
             gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
         }
     ];
-    const handlePreview = async () => {
+    const handlePreview = async (e: React.FormEvent) => {
+        e.preventDefault();
         if (!url.trim()) {
             setError("Please enter a URL");
             return;
@@ -80,12 +84,11 @@ const ResponsiveContainer: React.FC = () => {
         }
     };
 
-    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter") {
-            handlePreview();
-        }
-    };
 
+    const handleThemeToggle = () => {
+        setIsDark(!isDark);
+        localStorage.setItem('theme', JSON.stringify(!isDark));
+    };
 
     return (
         <div className={`min-h-screen transition-all duration-500 ${currentTheme.background} relative overflow-hidden`}>
@@ -107,48 +110,44 @@ const ResponsiveContainer: React.FC = () => {
                         <h1 className={`text-3xl sm:text-4xl lg:text-5xl font-bold ${currentTheme.text.primary} tracking-tight`}>
                             Responsive Preview
                         </h1>
+                        {/* Theme Toggle */}
+                        <button
+                            onClick={handleThemeToggle}
+                            className={`p-3 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 backdrop-blur-sm ${isDark
+                                ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30'
+                                : 'bg-slate-100/80 text-slate-600 hover:bg-slate-200/80'
+                                }`}
+                            aria-label="Toggle dark mode"
+                        >
+                            {isDark ? <Sun size={24} /> : <Moon size={24} />}
+                        </button>
                     </div>
 
                     <p className={`text-lg lg:text-xl ${currentTheme.text.secondary} max-w-3xl mx-auto mb-8`}>
                         Test your website across different devices and screen sizes with our modern, scalable preview tool
                     </p>
-
-                    {/* Theme Toggle */}
-                    <button
-                        onClick={() => setIsDark(!isDark)}
-                        className={`p-3 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 backdrop-blur-sm ${isDark
-                            ? 'bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30'
-                            : 'bg-slate-100/80 text-slate-600 hover:bg-slate-200/80'
-                            }`}
-                        aria-label="Toggle dark mode"
-                    >
-                        {isDark ? <Sun size={24} /> : <Moon size={24} />}
-                    </button>
                 </header>
 
                 {/* URL Input */}
                 <section className={`backdrop-blur-xl rounded-2xl shadow-xl border p-6 lg:p-8 mb-6 lg:mb-8 ${currentTheme.surface}`}>
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <div className="flex-1">
-                            <input
-                                value={url}
-                                onChange={(e) => setUrl(e.target.value)}
-                                onKeyDown={handleKeyPress}
-                                type="url"
-                                placeholder="Enter your website URL (e.g., example.com)"
-                                className={`w-full px-6 py-4 rounded-xl border-2 text-lg transition-all duration-300 
+                    <form className="flex flex-col sm:flex-row gap-4">
+                        <input
+                            value={url}
+                            onChange={(e) => setUrl(e.target.value)}
+                            type="url"
+                            placeholder="Enter your website URL (e.g., example.com)"
+                            className={`w-full px-6 py-4 rounded-xl border-2 text-lg transition-all duration-300 
                   focus:scale-[1.01] focus:outline-none backdrop-blur-sm ${isDark
-                                        ? 'bg-slate-900/60 border-slate-600/60 text-white placeholder-slate-400 focus:border-blue-400 focus:bg-slate-900/80'
-                                        : 'bg-white/90 border-slate-200/60 text-slate-800 placeholder-slate-400 focus:border-blue-400 focus:bg-white'
-                                    }`}
-                            />
-                            {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-                        </div>
+                                    ? 'bg-slate-900/60 border-slate-600/60 text-white placeholder-slate-400 focus:border-blue-400 focus:bg-slate-900/80'
+                                    : 'bg-white/90 border-slate-200/60 text-slate-800 placeholder-slate-400 focus:border-blue-400 focus:bg-white'
+                                }`}
+                        />
                         <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 whitespace-nowrap" onClick={handlePreview}
                             disabled={loading}>
                             {loading ? "Loading..." : "Preview"}
                         </button>
-                    </div>
+                    </form>
+                    {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
                 </section>
 
                 {/* Device Selection */}
@@ -208,10 +207,10 @@ const ResponsiveContainer: React.FC = () => {
                         <h2 className={`text-2xl lg:text-3xl font-bold ${currentTheme.text.primary} mb-4 sm:mb-0`}>
                             Preview: {selectedDevice.name}
                         </h2>
-                        <button className={`flex items-center gap-3 px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 font-semibold ${currentTheme.accent.primary} ${currentTheme.accent.hover} backdrop-blur-sm ${currentTheme.surface}`}>
+                        <a target="_blankz" href={previewUrl} className={`flex items-center gap-3 px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105 font-semibold ${currentTheme.accent.primary} ${currentTheme.accent.hover} backdrop-blur-sm ${currentTheme.surface}`}>
                             <ExternalLink size={20} />
                             <span>Open in New Tab</span>
-                        </button>
+                        </a>
                     </div>
                     {
                         previewUrl && (
