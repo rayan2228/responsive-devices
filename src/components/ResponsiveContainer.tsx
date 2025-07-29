@@ -1,44 +1,75 @@
-import { ExternalLink, Globe, Moon, Sun } from "lucide-react";
-import { useState } from "react";
-import { devices, themes } from "../data";
-import type { Device, DeviceCategory, } from "../types";
-import ControlPanel from "./ControlPanel";
+import { useCallback, useState } from "react";
+import { StorageService } from "../services/StorageService";
+import { getResponsiveScale } from "../utils";
+import { DeviceService } from "../services/DeviceService ";
+import { defaultDevices, themes } from "../data";
+import type { Device, ThemeMode } from "../types";
+import { Globe } from "lucide-react";
 import DeviceButton from "./DeviceButton";
-import PreviewFrame from "./PreviewFrame";
+import ControlPanel from "./ControlPanel";
 
-
-
-// Scaling utilities
-const getResponsiveScale = (deviceWidth: number, containerWidth: number): number => {
-    const maxScale = 0.8; // Maximum scale to prevent overflow
-    const minScale = 0.1;
-    const padding = 120; // Account for container padding
-    const availableWidth = containerWidth - padding;
-
-    if (deviceWidth <= availableWidth) return maxScale;
-
-    const scale = availableWidth / deviceWidth;
-    return Math.max(scale, minScale);
-};
 const ResponsiveContainer: React.FC = () => {
-    const [url, setUrl] = useState<string>("");
-    const [previewUrl, setPreviewUrl] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string>("");
-    const [isDark, setIsDark] = useState<boolean>(
-        localStorage.getItem("theme") === null ? false : JSON.parse(localStorage.getItem("theme") ?? "")
-    );
-    const [selectedDevice, setSelectedDevice] = useState<Device>(devices[0]);
+    const [isDark, setIsDark] = useState<ThemeMode>(() => StorageService.loadThemeMode() === 'dark');
+    const [devices, setDevices] = useState<Device[]>(() => {
+        const defaultWithIds = DeviceService.createDevicesWithIds(defaultDevices);
+        const customDevices = StorageService.loadCustomDevices();
+        return [...defaultWithIds, ...customDevices];
+    });
+    const [selectedDevice, setSelectedDevice] = useState<Device>(() => {
+        const allDevices = [
+            ...DeviceService.createDevicesWithIds(defaultDevices),
+            ...StorageService.loadCustomDevices()
+        ];
+        const savedDeviceId = StorageService.loadSelectedDevice();
+        const savedDevice = savedDeviceId ? DeviceService.findById(allDevices, savedDeviceId) : null;
+        return savedDevice || allDevices[0];
+    });
     const [isLandscape, setIsLandscape] = useState<boolean>(false);
     const [showAllDevices, setShowAllDevices] = useState<boolean>(false);
+    const [showCustomModal, setShowCustomModal] = useState<boolean>(false);
 
     const currentTheme = themes[isDark ? 'dark' : 'light'];
 
+    const getDevicesByCategory = useCallback((category: DeviceCategory): Device[] => {
+        return DeviceService.filterByCategory(devices, category);
+    }, [devices]);
 
-    const getDevicesByCategory = (category: DeviceCategory): Device[] => {
-        return devices.filter(device => device.category === category);
-    };
+    const handleThemeToggle = useCallback(() => {
+        const newMode = isDark ? 'light' : 'dark';
+        setIsDark(!isDark);
+        StorageService.saveThemeMode(newMode ? 'dark' : 'light');
+    }, [isDark]);
 
+    const handleDeviceSelect = useCallback((device: Device) => {
+        setSelectedDevice(device);
+        StorageService.saveSelectedDevice(device.id);
+    }, []);
+
+    const handleAddCustomDevice = useCallback((deviceData: Omit<Device, 'id' | 'icon' | 'category' | 'isCustom'>) => {
+        const newDevice = DeviceService.createCustomDevice(deviceData);
+        const updatedDevices = [...devices, newDevice];
+        setDevices(updatedDevices);
+        setSelectedDevice(newDevice);
+        StorageService.saveCustomDevices(updatedDevices);
+        StorageService.saveSelectedDevice(newDevice.id);
+    }, [devices]);
+
+    const handleDeleteCustomDevice = useCallback((deviceToDelete: Device) => {
+        if (!deviceToDelete.isCustom) return;
+
+        const updatedDevices = devices.filter(d => d.id !== deviceToDelete.id);
+        setDevices(updatedDevices);
+        StorageService.saveCustomDevices(updatedDevices);
+
+        // If the deleted device was selected, select the first available device
+        if (selectedDevice.id === deviceToDelete.id) {
+            const newSelected = updatedDevices[0];
+            setSelectedDevice(newSelected);
+            StorageService.saveSelectedDevice(newSelected.id);
+        }
+    }, [devices, selectedDevice]);
+
+    // Calculate responsive values
     const deviceWidth = isLandscape ? selectedDevice.height : selectedDevice.width;
     const containerWidth = typeof window !== 'undefined' ? window.innerWidth : 1200;
     const scale = getResponsiveScale(deviceWidth, containerWidth);
@@ -59,37 +90,13 @@ const ResponsiveContainer: React.FC = () => {
             name: 'Desktop & Laptops',
             category: 'desktop' as const,
             gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+        },
+        {
+            name: 'Custom Devices',
+            category: 'custom' as const,
+            gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
         }
     ];
-    const handlePreview = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!url.trim()) {
-            setError("Please enter a URL");
-            return;
-        }
-
-        let formattedUrl = url.trim();
-        if (!formattedUrl.startsWith("http://") && !formattedUrl.startsWith("https://")) {
-            formattedUrl = "https://" + formattedUrl;
-        }
-
-        try {
-            new URL(formattedUrl);
-            setError("");
-            setLoading(true);
-            setPreviewUrl(formattedUrl);
-            setTimeout(() => setLoading(false), 1000);
-        } catch {
-            setError("Please enter a valid URL");
-        }
-    };
-
-
-    const handleThemeToggle = () => {
-        setIsDark(!isDark);
-        localStorage.setItem('theme', JSON.stringify(!isDark));
-    };
-
     return (
         <div className={`min-h-screen transition-all duration-500 ${currentTheme.background} relative overflow-hidden`}>
             {/* Background Pattern */}
