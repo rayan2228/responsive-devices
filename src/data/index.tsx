@@ -1,7 +1,12 @@
 import { Monitor, Smartphone, Tablet } from "lucide-react";
-import type { Device, ThemeColors } from "../types";
+import type { Device, ThemeColors, ThemeMode } from "../types";
+const STORAGE_KEYS = {
+    CUSTOM_DEVICES: 'responsive-preview-custom-devices',
+    THEME_MODE: 'responsive-preview-theme-mode',
+    SELECTED_DEVICE: 'responsive-preview-selected-device',
+} as const;
 
-const themes: Record<'light' | 'dark', ThemeColors> = {
+const themes: Record<ThemeMode, ThemeColors> = {
     light: {
         background: 'bg-gradient-to-br from-slate-50 via-white to-blue-50',
         surface: 'bg-white/80 border-white/30',
@@ -38,8 +43,7 @@ const themes: Record<'light' | 'dark', ThemeColors> = {
     }
 };
 
-// Device configurations
-const devices: Device[] = [
+const defaultDevices: Omit<Device, 'id'>[] = [
     { name: "iPhone SE", width: 375, height: 667, icon: Smartphone, category: "mobile" },
     { name: "iPhone 14", width: 390, height: 844, icon: Smartphone, category: "mobile" },
     { name: "iPhone 14 Pro Max", width: 428, height: 926, icon: Smartphone, category: "mobile" },
@@ -56,5 +60,5 @@ const devices: Device[] = [
     { name: "Desktop 4K", width: 3840, height: 2160, icon: Monitor, category: "desktop" },
 ];
 
-export { devices, themes };
+export { defaultDevices, STORAGE_KEYS, themes };
 

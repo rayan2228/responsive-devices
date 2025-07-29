@@ -1,12 +1,16 @@
 interface Device {
+    id: string;
     name: string;
     width: number;
     height: number;
     icon: React.ComponentType<{ size?: number; className?: string }>;
     category: DeviceCategory;
+    isCustom?: boolean;
 }
 
-type DeviceCategory = "mobile" | "tablet" | "desktop";
+type DeviceCategory = "mobile" | "tablet" | "desktop" | "custom";
+
+type ThemeMode = 'light' | 'dark';
 
 interface ThemeColors {
     background: string;
@@ -26,11 +30,17 @@ interface ThemeColors {
     };
 }
 
+interface CustomDeviceForm {
+    name: string;
+    width: string;
+    height: string;
+}
 
 interface DeviceButtonProps {
     device: Device;
     isSelected: boolean;
     onClick: (device: Device) => void;
+    onDelete?: (device: Device) => void;
     theme: ThemeColors;
     size?: 'sm' | 'md' | 'lg';
 }
@@ -41,6 +51,14 @@ interface ControlPanelProps {
     onToggleLandscape: () => void;
     selectedDevice: Device;
     scale: number;
+    onAddCustomDevice: () => void;
+}
+
+interface CustomDeviceModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onSave: (device: Omit<Device, 'id' | 'icon' | 'category' | 'isCustom'>) => void;
+    theme: ThemeColors;
 }
 
 interface PreviewFrameProps {
@@ -48,9 +66,7 @@ interface PreviewFrameProps {
     isLandscape: boolean;
     theme: ThemeColors;
     scale: number;
-    loading: boolean;
-    previewUrl: string;
 }
 
-export type { ControlPanelProps, Device, DeviceButtonProps, DeviceCategory, PreviewFrameProps, ThemeColors };
+export type { ControlPanelProps, CustomDeviceForm, CustomDeviceModalProps, Device, DeviceButtonProps, DeviceCategory, PreviewFrameProps, ThemeColors, ThemeMode };
 
