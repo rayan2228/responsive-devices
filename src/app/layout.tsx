@@ -1,6 +1,7 @@
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Head from 'next/head';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -52,6 +53,29 @@ export const metadata: Metadata = {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
   },
+  verification: {
+    google: 'pODC2wrngSGaNlkVCpYajNJvI748aMcdqLTKpxtRIpc',
+  }
+};
+
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Responsihub",
+  url: "https://www.responsihub.com",
+  operatingSystem: "All",
+  applicationCategory: "DesignApplication",
+  offers: {
+    "@type": "Offer",
+    price: "0", // Or real price
+    priceCurrency: "USD"
+  },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.9",
+    reviewCount: "218"
+  }
 };
 
 export default function RootLayout({
@@ -61,6 +85,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+        <link rel="canonical" href="https://www.responsihub.com/" />
+      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
