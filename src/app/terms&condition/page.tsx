@@ -25,7 +25,7 @@ const TermsPage: React.FC = () => {
                         <li>
                             <strong>Affiliate</strong> means an entity that controls, is
                             controlled by or is under common control with a party, where
-                            "control" means ownership of 50% or more of the shares, equity
+                            &quot;control&quot; means ownership of 50% or more of the shares, equity
                             interest or other securities entitled to vote for election of
                             directors or other managing authority.
                         </li>
@@ -33,7 +33,7 @@ const TermsPage: React.FC = () => {
                             <strong>Country</strong> refers to: Bangladesh
                         </li>
                         <li>
-                            <strong>Company</strong> refers to Responsihub ("We", "Us", "Our").
+                            <strong>Company</strong> refers to Responsihub (&quot;We&quot;, &quot;Us&quot, or &quot;Our&quot;).
                         </li>
                         <li>
                             <strong>Device</strong> means any device that can access the Service

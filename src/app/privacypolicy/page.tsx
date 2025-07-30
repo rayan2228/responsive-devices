@@ -24,7 +24,7 @@ const PrivacyPolicyPage: React.FC = () => {
                     <ul className="list-disc ml-6 space-y-2">
                         <li><strong>Account</strong> means a unique account created for You to access our Service.</li>
                         <li><strong>Affiliate</strong> refers to an entity that controls, is controlled by, or is under common control with a party.</li>
-                        <li><strong>Company</strong> refers to Responsihub ("We", "Us", "Our").</li>
+                        <li><strong>Company</strong> refers to Responsihub (&quot;We&quot;, &quot;Us&quot, or &quot;Our&quot;).</li>
                         <li><strong>Cookies</strong> are small files placed on Your device by a website, containing details of Your browsing history.</li>
                         <li><strong>Country</strong> refers to: Bangladesh</li>
                         <li><strong>Device</strong> means any device that can access the Service.</li>
