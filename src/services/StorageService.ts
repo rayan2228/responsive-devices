@@ -52,10 +52,10 @@ export class StorageService {
   static loadThemeMode(): ThemeMode {
     try {
       const stored = localStorage.getItem(STORAGE_KEYS.THEME_MODE);
-      return (stored as ThemeMode) || "light";
+      return (stored as ThemeMode) || "dark";
     } catch (error) {
       console.warn("Failed to load theme mode:", error);
-      return "light";
+      return "dark";
     }
   }
 
