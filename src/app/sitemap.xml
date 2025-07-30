@@ -4,29 +4,28 @@
 
   <url>
     <loc>https://www.responsihub.com/</loc>
-    <lastmod>2025-07-30T18:00:00+06:00</lastmod>
+    <lastmod>2025-07-30T18:00:00&#43;06:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
-
   <url>
-    <loc>https://www.responsihub.com/terms&condition</loc>
-    <lastmod>2025-07-30T18:00:00+06:00</lastmod>
+    <loc>https://www.responsihub.com/terms</loc>
+    <lastmod>2025-07-30T18:00:00&#43;06:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://www.responsihub.com/privacypolicy</loc>
-    <lastmod>2025-07-30T18:00:00+06:00</lastmod>
+    <loc>https://www.responsihub.com/privacy</loc>
+    <lastmod>2025-07-30T18:00:00&#43;06:00</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
     <loc>https://www.responsihub.com/contact</loc>
-    <lastmod>2025-07-30T18:00:00+06:00</lastmod>
+    <lastmod>2025-07-30T18:00:00&#43;06:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

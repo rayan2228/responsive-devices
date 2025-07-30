@@ -31,10 +31,10 @@ const Footer: React.FC<FooterProps> = ({ theme }) => {
                             Rayan Hossain
                         </Link>
                     </span>
-                    <Link href="/privacypolicy" className={`hover:underline ${theme.text.muted}`}>
+                    <Link href="/privacy" className={`hover:underline ${theme.text.muted}`}>
                         Privacy Policy
                     </Link>
-                    <Link href="/terms&condition" target="_blank" className={`hover:underline ${theme.text.muted}`}>
+                    <Link href="/terms" target="_blank" className={`hover:underline ${theme.text.muted}`}>
                         Terms & Conditions
                     </Link>
                     <Link href="https://www.xrodev.com/" className={`hover:underline ${theme.text.muted}`}>
