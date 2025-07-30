@@ -11,7 +11,6 @@ import DeviceButton from "./DeviceButton";
 import PreviewFrame from "./PreviewFrame";
 
 const ResponsivePreview: React.FC = () => {
-  // State initialization with storage
   const [isDark, setIsDark] = useState<boolean>(() => StorageService.loadThemeMode() === 'dark');
   const [devices, setDevices] = useState<Device[]>(() => {
     const defaultWithIds = DeviceService.createDevicesWithIds(defaultDevices);
@@ -28,19 +27,23 @@ const ResponsivePreview: React.FC = () => {
     return savedDevice || allDevices[0];
   });
   const [isLandscape, setIsLandscape] = useState<boolean>(false);
-  const [showAllDevices, setShowAllDevices] = useState<boolean>(false);
+  const [expandedCategories, setExpandedCategories] = useState<Record<DeviceCategory, boolean>>({
+    mobile: false,
+    tablet: false,
+    desktop: false,
+    custom: false
+  });
   const [showCustomModal, setShowCustomModal] = useState<boolean>(false);
   const [url, setUrl] = useState<string>('');
   const [containerWidth, setContainerWidth] = useState<number>(1200);
+  const [activeCategory, setActiveCategory] = useState<DeviceCategory>('mobile');
 
   const currentTheme = themes[isDark ? 'dark' : 'light'];
 
-  // Handle window resize
   useEffect(() => {
     const handleResize = () => {
       setContainerWidth(window.innerWidth);
     };
-
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -59,6 +62,7 @@ const ResponsivePreview: React.FC = () => {
   const handleDeviceSelect = useCallback((device: Device) => {
     setSelectedDevice(device);
     StorageService.saveSelectedDevice(device.id);
+    window.scrollTo({ top: 780, behavior: 'smooth' });
   }, []);
 
   const handleAddCustomDevice = useCallback((deviceData: Omit<Device, 'id' | 'icon' | 'category' | 'isCustom'>) => {
@@ -72,12 +76,9 @@ const ResponsivePreview: React.FC = () => {
 
   const handleDeleteCustomDevice = useCallback((deviceToDelete: Device) => {
     if (!deviceToDelete.isCustom) return;
-
     const updatedDevices = devices.filter(d => d.id !== deviceToDelete.id);
     setDevices(updatedDevices);
     StorageService.saveCustomDevices(updatedDevices);
-
-    // If the deleted device was selected, select the first available device
     if (selectedDevice.id === deviceToDelete.id) {
       const newSelected = updatedDevices[0];
       setSelectedDevice(newSelected);
@@ -85,37 +86,33 @@ const ResponsivePreview: React.FC = () => {
     }
   }, [devices, selectedDevice]);
 
-  // Calculate responsive values
+  const toggleCategoryExpansion = useCallback((category: DeviceCategory) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [category]: !prev[category]
+    }));
+  }, []);
+
   const deviceWidth = isLandscape ? selectedDevice.height : selectedDevice.width;
   const scale = getResponsiveScale(deviceWidth, containerWidth);
 
   const categoryConfig = [
-    {
-      name: 'Mobile Devices',
-      category: 'mobile' as const,
-      showCount: showAllDevices ? undefined : 4,
-      gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
-    },
-    {
-      name: 'Tablets',
-      category: 'tablet' as const,
-      gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-    },
-    {
-      name: 'Desktop & Laptops',
-      category: 'desktop' as const,
-      gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-    },
-    {
-      name: 'Custom Devices',
-      category: 'custom' as const,
-      gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-    }
+    { name: 'Mobile Devices', category: 'mobile' as const, defaultShowCount: 4, gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4' },
+    { name: 'Tablets', category: 'tablet' as const, defaultShowCount: 3, gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' },
+    { name: 'Desktop & Laptops', category: 'desktop' as const, defaultShowCount: 3, gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' },
+    { name: 'Custom Devices', category: 'custom' as const, defaultShowCount: 3, gridCols: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' }
   ];
+
+  const activeCategoryData = categoryConfig.find(cat => cat.category === activeCategory);
+  const activeDevices = getDevicesByCategory(activeCategory);
+  const isExpanded = expandedCategories[activeCategory];
+  const shouldShowToggle = activeDevices.length > (activeCategoryData?.defaultShowCount || 3);
+  const displayDevices = shouldShowToggle && !isExpanded
+    ? activeDevices.slice(0, activeCategoryData?.defaultShowCount)
+    : activeDevices;
 
   return (
     <div className={`min-h-screen transition-all duration-500 ${currentTheme.background} relative overflow-hidden`}>
-      {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
           backgroundImage: `radial-gradient(circle at 2px 2px, ${isDark ? 'white' : 'black'} 1px, transparent 0)`,
@@ -124,71 +121,73 @@ const ResponsivePreview: React.FC = () => {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
           <div>
-            <h1 className={`text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2`}>
+            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text mb-2">
               Responsive Preview
             </h1>
-            <p className={`text-lg ${currentTheme.text.secondary}`}>
-              Test your websites across different device viewports
+            <p className={`text-base sm:text-lg ${currentTheme.text.secondary}`}>
+              Test your websites across real-world device viewports
             </p>
           </div>
 
           <button
             onClick={handleThemeToggle}
-            className={`flex items-center gap-3 px-6 py-3 rounded-xl border-2 font-semibold 
-              transition-all duration-300 hover:scale-105 active:scale-95 
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition shadow-sm hover:shadow-md active:scale-95
               ${currentTheme.surface} ${currentTheme.text.primary} ${currentTheme.border} ${currentTheme.borderHover} ${currentTheme.surfaceHover}`}
           >
-            {isDark ? <Sun size={18} /> : <Moon size={18} />}
-            <span>{isDark ? 'Light' : 'Dark'} Mode</span>
+            {isDark ? <Sun size={16} /> : <Moon size={16} />}
+            <span className="text-sm">{isDark ? 'Light Mode' : 'Dark Mode'}</span>
           </button>
         </div>
 
-        {/* Device Categories */}
-        <div className="space-y-8 mb-8">
-          {categoryConfig.map(({ name, category, showCount, gridCols }) => {
-            const categoryDevices = getDevicesByCategory(category);
-            const displayDevices = showCount ? categoryDevices.slice(0, showCount) : categoryDevices;
-
-            if (categoryDevices.length === 0) return null;
-
-            return (
-              <div key={category} className={`p-6 rounded-2xl border backdrop-blur-sm ${currentTheme.surface}`}>
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className={`text-2xl font-bold ${currentTheme.text.primary}`}>
-                    {name}
-                  </h2>
-                  {category === 'mobile' && categoryDevices.length > 4 && (
-                    <button
-                      onClick={() => setShowAllDevices(!showAllDevices)}
-                      className={`text-sm font-medium px-4 py-2 rounded-lg transition-colors ${currentTheme.accent.primary} ${currentTheme.accent.hover}`}
-                    >
-                      {showAllDevices ? 'Show Less' : `Show All (${categoryDevices.length})`}
-                    </button>
-                  )}
-                </div>
-
-                <div className={`grid ${gridCols} gap-4`}>
-                  {displayDevices.map((device) => (
-                    <DeviceButton
-                      key={device.id}
-                      device={device}
-                      isSelected={selectedDevice.id === device.id}
-                      onClick={handleDeviceSelect}
-                      onDelete={device.isCustom ? handleDeleteCustomDevice : undefined}
-                      theme={currentTheme}
-                    />
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+        <div className="mb-6 border-b border-gray-300 dark:border-gray-600 flex gap-4 overflow-x-auto">
+          {categoryConfig.map(({ name, category }) => (
+            getDevicesByCategory(category).length > 0 && (
+              <button
+                key={category}
+                onClick={() => setActiveCategory(category)}
+                className={`px-4 py-2 whitespace-nowrap font-medium transition border-b-2
+                  ${activeCategory === category
+                    ? `border-blue-500 ${currentTheme.text.primary}`
+                    : `border-transparent ${currentTheme.text.muted} hover:${currentTheme.accent.hover}`}`}
+              >
+                {name}
+              </button>
+            )
+          ))}
         </div>
 
-        {/* Control Panel */}
-        <div className={`p-6 rounded-2xl border backdrop-blur-sm ${currentTheme.surface}`}>
+        <div className={`p-6 rounded-2xl border shadow-md ${currentTheme.surface}`}>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className={`text-xl font-bold ${currentTheme.text.primary}`}>
+              {activeCategoryData?.name}
+            </h2>
+            {shouldShowToggle && (
+              <button
+                onClick={() => toggleCategoryExpansion(activeCategory)}
+                className={`text-sm font-medium px-4 py-2 rounded-lg transition-colors ${currentTheme.accent.primary} ${currentTheme.accent.hover}`}
+              >
+                {isExpanded ? 'Show Less' : `Show All (${activeDevices.length})`}
+              </button>
+            )}
+          </div>
+
+          <div className={`grid ${activeCategoryData?.gridCols} gap-4`}>
+            {displayDevices.map((device) => (
+              <DeviceButton
+                key={device.id}
+                device={device}
+                isSelected={selectedDevice.id === device.id}
+                onClick={handleDeviceSelect}
+                onDelete={device.isCustom ? handleDeleteCustomDevice : undefined}
+                theme={currentTheme}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className={`p-6 rounded-2xl border shadow-md ${currentTheme.surface} mt-8`}>
           <ControlPanel
             theme={currentTheme}
             isLandscape={isLandscape}
@@ -201,7 +200,6 @@ const ResponsivePreview: React.FC = () => {
           />
         </div>
 
-        {/* Preview Frame */}
         <div className="mt-8">
           <PreviewFrame
             device={selectedDevice}
@@ -212,7 +210,6 @@ const ResponsivePreview: React.FC = () => {
           />
         </div>
 
-        {/* Custom Device Modal */}
         <CustomDeviceModal
           isOpen={showCustomModal}
           onClose={() => setShowCustomModal(false)}

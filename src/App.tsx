@@ -1,8 +1,11 @@
-import ResponsiveContainer from "./components/ResponsiveContainer"
-
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import ResponsiveContainer from "./components/ResponsiveContainer";
 const App = () => {
   return (
-    <ResponsiveContainer />
+    <>
+      <ResponsiveContainer />
+      <SpeedInsights />
+    </>
   )
 }
 
