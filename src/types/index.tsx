@@ -52,6 +52,8 @@ interface ControlPanelProps {
     selectedDevice: Device;
     scale: number;
     onAddCustomDevice: () => void;
+    url: string;
+    onUrlChange: (url: string) => void;
 }
 
 interface CustomDeviceModalProps {
@@ -66,6 +68,7 @@ interface PreviewFrameProps {
     isLandscape: boolean;
     theme: ThemeColors;
     scale: number;
+    url: string | undefined;
 }
 
 export type { ControlPanelProps, CustomDeviceForm, CustomDeviceModalProps, Device, DeviceButtonProps, DeviceCategory, PreviewFrameProps, ThemeColors, ThemeMode };

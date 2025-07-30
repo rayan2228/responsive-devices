@@ -1,3 +1,4 @@
+import { Monitor } from "lucide-react";
 import { STORAGE_KEYS } from "../data";
 import type { Device, ThemeMode } from "../types";
 
@@ -28,7 +29,7 @@ export class StorageService {
       if (!stored) return [];
 
       const parsed = JSON.parse(stored);
-      return parsed.map((device: any) => ({
+      return parsed.map((device: Device) => ({
         ...device,
         icon: Monitor,
         category: "custom" as const,

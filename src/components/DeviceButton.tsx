@@ -46,27 +46,33 @@ const DeviceButton: React.FC<DeviceButtonProps> = ({
                 className={`${isSelected ? 'text-white' : theme.text.muted} transition-colors`}
             />
             <div className="flex flex-col items-start min-w-0 flex-1">
-                <div className="flex items-center gap-2 w-full">
-                    <span className={`font-semibold text-${size} truncate flex-1`}>
-                        {device.name}
-                    </span>
-                    {device.isCustom && (
-                        <div className="flex items-center gap-1">
-                            <Edit3 size={12} className={`${isSelected ? 'text-blue-100' : theme.text.muted}`} />
-                            {onDelete && (
-                                <button
-                                    onClick={handleDelete}
-                                    className={`p-1 rounded hover:bg-red-500/20 transition-colors ${isSelected ? 'text-red-200 hover:text-red-100' : 'text-red-500 hover:text-red-600'
-                                        }`}
-                                    aria-label="Delete custom device"
-                                >
-                                    <Trash2 size={12} />
-                                </button>
+                {
+                    device.isCustom ? (
+                        <div className="flex items-center gap-2 w-full">
+                            <span className={`font-semibold text-${size} truncate flex-1`}>
+                                {device.name}
+                            </span>
+                            {device.isCustom && (
+                                <div className="flex items-center gap-1">
+                                    <Edit3 size={12} className={`${isSelected ? 'text-blue-100' : theme.text.muted}`} />
+                                    {onDelete && (
+                                        <button
+                                            onClick={handleDelete}
+                                            className={`p-1 rounded hover:bg-red-500/20 transition-colors ${isSelected ? 'text-red-200 hover:text-red-100' : 'text-red-500 hover:text-red-600'
+                                                }`}
+                                            aria-label="Delete custom device"
+                                        >
+                                            <Trash2 size={12} />
+                                        </button>
+                                    )}
+                                </div>
                             )}
                         </div>
-                    )}
-                </div>
-                <span className={`text-xs ${isSelected ? 'text-blue-100' : theme.text.muted
+                    ) : <span className={`font-semibold text-${size} truncate flex-1`}>
+                        {device.name}
+                    </span>
+                }
+                <span className={`text-sm ${isSelected ? 'text-white' : theme.text.muted
                     }`}>
                     {device.width} × {device.height}
                 </span>
