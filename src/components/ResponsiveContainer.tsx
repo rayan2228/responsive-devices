@@ -8,6 +8,7 @@ import { getResponsiveScale } from "../utils";
 import ControlPanel from "./ControlPanel";
 import CustomDeviceModal from "./CustomDeviceModal";
 import DeviceButton from "./DeviceButton";
+import Footer from "./Footer";
 import PreviewFrame from "./PreviewFrame";
 
 const ResponsivePreview: React.FC = () => {
@@ -124,7 +125,7 @@ const ResponsivePreview: React.FC = () => {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
           <div>
             <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text mb-2">
-              Responsive Preview
+              Responsihub
             </h1>
             <p className={`text-base sm:text-lg ${currentTheme.text.secondary}`}>
               Test your websites across real-world device viewports
@@ -158,7 +159,7 @@ const ResponsivePreview: React.FC = () => {
           ))}
         </div>
 
-        <div className={`p-6 rounded-2xl border shadow-md ${currentTheme.surface}`}>
+        <div className={`p-6 rounded-2xl border shadow-md ${currentTheme.surface} `}>
           <div className="flex items-center justify-between mb-4">
             <h2 className={`text-xl font-bold ${currentTheme.text.primary}`}>
               {activeCategoryData?.name}
@@ -217,6 +218,8 @@ const ResponsivePreview: React.FC = () => {
           theme={currentTheme}
         />
       </div>
+      <Footer theme={currentTheme} />
+
     </div>
   );
 };

@@ -9,14 +9,14 @@ const STORAGE_KEYS = {
 const themes: Record<ThemeMode, ThemeColors> = {
     light: {
         background: 'bg-gradient-to-br from-slate-50 via-white to-blue-50',
-        surface: 'bg-white/80 border-white/30',
+        surface: 'bg-white/80 border-slate-700/20',
         surfaceHover: 'hover:bg-blue-50/50',
-        border: 'border-slate-200/60',
+        border: 'border-slate-700/20',
         borderHover: 'hover:border-blue-300/60',
         text: {
             primary: 'text-slate-800',
             secondary: 'text-slate-600',
-            muted: 'text-slate-500'
+            muted: 'text-slate-800'
         },
         accent: {
             primary: 'text-blue-600',
@@ -33,7 +33,7 @@ const themes: Record<ThemeMode, ThemeColors> = {
         text: {
             primary: 'text-white',
             secondary: 'text-slate-300',
-            muted: 'text-slate-400'
+            muted: 'text-slate-200'
         },
         accent: {
             primary: 'text-blue-400',

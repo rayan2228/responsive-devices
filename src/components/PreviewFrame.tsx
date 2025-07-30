@@ -1,6 +1,6 @@
+import { Globe } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { PreviewFrameProps } from "../types";
-import { Globe } from "lucide-react";
 
 const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme, scale, url }) => {
     const width = isLandscape ? device.height : device.width;
@@ -72,7 +72,7 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme,
                         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/10 pointer-events-none" />
                     </div>
                 </div>
-                <div className="absolute -inset-8 bg-gradient-to-r from-blue-600/15 to-purple-600/15 rounded-3xl blur-2xl opacity-60" />
+                <div className="absolute -inset-8 bg-gradient-to-r from-blue-600/15 to-purple-600/15 rounded-3xl blur-2xl opacity-60 -z-10" />
             </div>
         </div>
     );
