@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 interface FooterProps {
@@ -21,24 +22,24 @@ const Footer: React.FC<FooterProps> = ({ theme }) => {
                 <div className="flex gap-4 mt-2 sm:mt-0 items-center">
                     <span className={`${theme.text.muted}`}>
                         Developed by{" "}
-                        <a
-                            href="https://rayanhossain.dev"
+                        <Link
+                            href="https://www.xrodev.com/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`${theme.text.muted}  font-bold`}
                         >
                             Rayan Hossain
-                        </a>
+                        </Link>
                     </span>
-                    <a href="#" className={`hover:underline ${theme.text.muted}`}>
-                        Privacy
-                    </a>
-                    <a href="#" className={`hover:underline ${theme.text.muted}`}>
-                        Terms
-                    </a>
-                    <a href="#" className={`hover:underline ${theme.text.muted}`}>
-                        Contact
-                    </a>
+                    <Link href="/privacypolicy" className={`hover:underline ${theme.text.muted}`}>
+                        Privacy Policy
+                    </Link>
+                    <Link href="/terms&condition" target="_blank" className={`hover:underline ${theme.text.muted}`}>
+                        Terms & Conditions
+                    </Link>
+                    <Link href="https://www.xrodev.com/" className={`hover:underline ${theme.text.muted}`}>
+                        contact
+                    </Link>
                 </div>
             </div>
         </footer>
