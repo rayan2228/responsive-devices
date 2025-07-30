@@ -1,14 +1,14 @@
 import { Moon, Sun } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { defaultDevices, themes } from "../data";
+import { DeviceService } from "../services/DeviceService ";
+import { StorageService } from "../services/StorageService";
+import type { Device, DeviceCategory } from "../types";
+import { getResponsiveScale } from "../utils";
 import ControlPanel from "./ControlPanel";
 import CustomDeviceModal from "./CustomDeviceModal";
 import DeviceButton from "./DeviceButton";
 import PreviewFrame from "./PreviewFrame";
-import { getResponsiveScale } from "../utils";
-import { StorageService } from "../services/StorageService";
-import { DeviceService } from "../services/DeviceService ";
-import { useCallback, useEffect, useState } from "react";
-import type { Device, DeviceCategory } from "../types";
-import { defaultDevices, themes } from "../data";
 
 const ResponsivePreview: React.FC = () => {
   // State initialization with storage
