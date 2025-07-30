@@ -1,3 +1,4 @@
+"use client"
 import { useCallback, useState } from "react";
 import { ValidationService } from "../services/ValidationService ";
 import type { CustomDeviceForm, CustomDeviceModalProps } from "../types";
@@ -83,10 +84,10 @@ const CustomDeviceModal: React.FC<CustomDeviceModalProps> = ({
               placeholder="e.g., Custom Mobile, My Tablet"
               maxLength={50}
               className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none ${errors.name
-                  ? "border-red-500 focus:border-red-400"
-                  : theme.surface.includes("dark")
-                    ? "bg-slate-900/60 border-slate-600/60 text-white focus:border-blue-400"
-                    : "bg-white/90 border-slate-200/60 text-slate-800 focus:border-blue-400"
+                ? "border-red-500 focus:border-red-400"
+                : theme.surface.includes("dark")
+                  ? "bg-slate-900/60 border-slate-600/60 text-white focus:border-blue-400"
+                  : "bg-white/90 border-slate-200/60 text-slate-800 focus:border-blue-400"
                 }`}
             />
             {errors.name && (
@@ -109,10 +110,10 @@ const CustomDeviceModal: React.FC<CustomDeviceModalProps> = ({
                 min="100"
                 max="5000"
                 className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none ${errors.width
-                    ? "border-red-500 focus:border-red-400"
-                    : theme.surface.includes("dark")
-                      ? "bg-slate-900/60 border-slate-600/60 text-white focus:border-blue-400"
-                      : "bg-white/90 border-slate-200/60 text-slate-800 focus:border-blue-400"
+                  ? "border-red-500 focus:border-red-400"
+                  : theme.surface.includes("dark")
+                    ? "bg-slate-900/60 border-slate-600/60 text-white focus:border-blue-400"
+                    : "bg-white/90 border-slate-200/60 text-slate-800 focus:border-blue-400"
                   }`}
               />
               {errors.width && (
@@ -134,10 +135,10 @@ const CustomDeviceModal: React.FC<CustomDeviceModalProps> = ({
                 min="100"
                 max="5000"
                 className={`w-full px-4 py-3 rounded-lg border-2 transition-colors focus:outline-none ${errors.height
-                    ? "border-red-500 focus:border-red-400"
-                    : theme.surface.includes("dark")
-                      ? "bg-slate-900/60 border-slate-600/60 text-white focus:border-blue-400"
-                      : "bg-white/90 border-slate-200/60 text-slate-800 focus:border-blue-400"
+                  ? "border-red-500 focus:border-red-400"
+                  : theme.surface.includes("dark")
+                    ? "bg-slate-900/60 border-slate-600/60 text-white focus:border-blue-400"
+                    : "bg-white/90 border-slate-200/60 text-slate-800 focus:border-blue-400"
                   }`}
               />
               {errors.height && (

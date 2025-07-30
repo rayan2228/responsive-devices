@@ -1,3 +1,4 @@
+"use client"
 import { Globe, Plus, RotateCcw } from "lucide-react";
 import type { ControlPanelProps } from "../types";
 

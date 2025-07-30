@@ -1,3 +1,4 @@
+"use client"
 import { Moon, Sun } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { defaultDevices, themes } from "../data";
@@ -11,7 +12,7 @@ import DeviceButton from "./DeviceButton";
 import Footer from "./Footer";
 import PreviewFrame from "./PreviewFrame";
 
-const ResponsivePreview: React.FC = () => {
+const ResponsiveContainer: React.FC = () => {
   const [isDark, setIsDark] = useState<boolean>(() => StorageService.loadThemeMode() === 'dark');
   const [devices, setDevices] = useState<Device[]>(() => {
     const defaultWithIds = DeviceService.createDevicesWithIds(defaultDevices);
@@ -224,4 +225,4 @@ const ResponsivePreview: React.FC = () => {
   );
 };
 
-export default ResponsivePreview;
+export default ResponsiveContainer;

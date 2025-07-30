@@ -1,3 +1,4 @@
+"use client"
 import { Edit3, Trash2 } from "lucide-react";
 import { useCallback } from "react";
 import type { DeviceButtonProps } from "../types";
