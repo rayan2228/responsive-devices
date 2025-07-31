@@ -1,5 +1,5 @@
 "use client"
-import { Edit3, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useCallback } from "react";
 import type { DeviceButtonProps } from "../types";
 
@@ -55,7 +55,6 @@ const DeviceButton: React.FC<DeviceButtonProps> = ({
                             </span>
                             {device.isCustom && (
                                 <div className="flex items-center gap-1">
-                                    <Edit3 size={12} className={`${isSelected ? 'text-blue-100' : theme.text.muted}`} />
                                     {onDelete && (
                                         <button
                                             onClick={handleDelete}
