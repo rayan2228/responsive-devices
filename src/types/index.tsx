@@ -69,6 +69,8 @@ interface PreviewFrameProps {
     theme: ThemeColors;
     scale: number;
     url: string | undefined;
+    handleShare: (width: number, height: number) => void;
+    copied: boolean;
 }
 
 export type { ControlPanelProps, CustomDeviceForm, CustomDeviceModalProps, Device, DeviceButtonProps, DeviceCategory, PreviewFrameProps, ThemeColors, ThemeMode };

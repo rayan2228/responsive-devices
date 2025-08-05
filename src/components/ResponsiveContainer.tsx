@@ -121,6 +121,21 @@ const ResponsiveContainer: React.FC = () => {
     }
   }, []);
 
+  const [copied, setCopied] = useState(false);
+  const handleShare = (width: number, height: number) => {
+    if (!url) return;
+
+    const currentUrl = new URL(window.location.origin);
+    currentUrl.searchParams.set("url", url);
+    currentUrl.searchParams.set("width", width.toString());
+    currentUrl.searchParams.set("height", height.toString());
+    currentUrl.searchParams.set("orientation", isLandscape ? "landscape" : "portrait");
+
+    navigator.clipboard.writeText(currentUrl.toString()).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
   return (
     <div className={`min-h-screen transition-all duration-500 ${currentTheme.background} relative overflow-hidden`}>
       <div className="absolute inset-0 opacity-5">
@@ -255,6 +270,8 @@ const ResponsiveContainer: React.FC = () => {
             theme={currentTheme}
             scale={scale}
             url={url}
+            handleShare={handleShare}
+            copied={copied}
           />
         </div>
 

@@ -4,14 +4,13 @@ import { useEffect, useState } from "react";
 import { FiShare2 } from "react-icons/fi";
 import type { PreviewFrameProps } from "../types";
 
-const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme, scale, url }) => {
+const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme, scale, url, handleShare, copied }) => {
     const width = isLandscape ? device.height : device.width;
     const height = isLandscape ? device.width : device.height;
     const scaledWidth = width * scale;
     const scaledHeight = height * scale;
 
     const [loading, setLoading] = useState(false);
-    const [copied, setCopied] = useState(false);
 
     useEffect(() => {
         if (url) {
@@ -21,20 +20,7 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme,
         }
     }, [url]);
 
-    const handleShare = () => {
-        if (!url) return;
 
-        const currentUrl = new URL(window.location.origin);
-        currentUrl.searchParams.set("url", url);
-        currentUrl.searchParams.set("width", width.toString());
-        currentUrl.searchParams.set("height", height.toString());
-        currentUrl.searchParams.set("orientation", isLandscape ? "landscape" : "portrait");
-
-        navigator.clipboard.writeText(currentUrl.toString()).then(() => {
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-        });
-    };
 
     return (
         <div className="flex justify-center items-center p-8">
@@ -42,7 +28,7 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme,
                 {/* Share Button */}
                 {url && (
                     <button
-                        onClick={handleShare}
+                        onClick={() => handleShare(width, height)}
                         className="absolute top-3 right-3 z-20 bg-white text-sm text-slate-700 border border-slate-300 px-3 py-1 rounded-md flex items-center gap-2 hover:bg-slate-100 transition"
                     >
                         <FiShare2 />
