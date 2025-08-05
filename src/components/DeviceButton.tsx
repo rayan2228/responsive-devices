@@ -33,7 +33,7 @@ const DeviceButton: React.FC<DeviceButtonProps> = ({
     }, [device, onDelete]);
 
     return (
-        <button
+        <div
             onClick={() => onClick(device)}
             className={`group relative flex items-center ${sizeClasses[size]} rounded-xl border-2 
         transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] 
@@ -80,7 +80,7 @@ const DeviceButton: React.FC<DeviceButtonProps> = ({
             {isSelected && (
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600/10 to-purple-600/10 animate-pulse" />
             )}
-        </button>
+        </div>
     );
 };
 
