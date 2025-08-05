@@ -43,21 +43,21 @@ const themes: Record<ThemeMode, ThemeColors> = {
     }
 };
 
-const defaultDevices: Omit<Device, 'id'>[] = [
-    { name: "iPhone SE", width: 375, height: 667, icon: Smartphone, category: "mobile" },
-    { name: "iPhone 14", width: 390, height: 844, icon: Smartphone, category: "mobile" },
-    { name: "iPhone 14 Pro Max", width: 428, height: 926, icon: Smartphone, category: "mobile" },
-    { name: "Pixel 7", width: 412, height: 915, icon: Smartphone, category: "mobile" },
-    { name: "Samsung Galaxy S23", width: 360, height: 780, icon: Smartphone, category: "mobile" },
-    { name: "iPad Mini", width: 768, height: 1024, icon: Tablet, category: "tablet" },
-    { name: "iPad Air", width: 820, height: 1180, icon: Tablet, category: "tablet" },
-    { name: "iPad Pro 12.9", width: 1024, height: 1366, icon: Tablet, category: "tablet" },
-    { name: "Surface Pro", width: 912, height: 1368, icon: Tablet, category: "tablet" },
-    { name: "MacBook Air", width: 1280, height: 832, icon: Monitor, category: "desktop" },
-    { name: "Laptop", width: 1366, height: 768, icon: Monitor, category: "desktop" },
-    { name: "Desktop HD", width: 1920, height: 1080, icon: Monitor, category: "desktop" },
-    { name: "Desktop QHD", width: 2560, height: 1440, icon: Monitor, category: "desktop" },
-    { name: "Desktop 4K", width: 3840, height: 2160, icon: Monitor, category: "desktop" },
+const defaultDevices: Device[] = [
+    { id: "1", name: "iPhone SE", width: 375, height: 667, icon: Smartphone, category: "mobile" },
+    { id: "2", name: "iPhone 14", width: 390, height: 844, icon: Smartphone, category: "mobile" },
+    { id: "3", name: "iPhone 14 Pro Max", width: 428, height: 926, icon: Smartphone, category: "mobile" },
+    { id: "4", name: "Pixel 7", width: 412, height: 915, icon: Smartphone, category: "mobile" },
+    { id: "5", name: "Samsung Galaxy S23", width: 360, height: 780, icon: Smartphone, category: "mobile" },
+    { id: "6", name: "iPad Mini", width: 768, height: 1024, icon: Tablet, category: "tablet" },
+    { id: "7", name: "iPad Air", width: 820, height: 1180, icon: Tablet, category: "tablet" },
+    { id: "8", name: "iPad Pro 12.9", width: 1024, height: 1366, icon: Tablet, category: "tablet" },
+    { id: "9", name: "Surface Pro", width: 912, height: 1368, icon: Tablet, category: "tablet" },
+    { id: "10", name: "MacBook Air", width: 1280, height: 832, icon: Monitor, category: "desktop" },
+    { id: "11", name: "Laptop", width: 1366, height: 768, icon: Monitor, category: "desktop" },
+    { id: "12", name: "Desktop HD", width: 1920, height: 1080, icon: Monitor, category: "desktop" },
+    { id: "13", name: "Desktop QHD", width: 2560, height: 1440, icon: Monitor, category: "desktop" },
+    { id: "14", name: "Desktop 4K", width: 3840, height: 2160, icon: Monitor, category: "desktop" },
 ];
 
 export { defaultDevices, STORAGE_KEYS, themes };

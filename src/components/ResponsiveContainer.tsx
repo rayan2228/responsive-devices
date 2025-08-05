@@ -16,13 +16,12 @@ import PreviewFrame from "./PreviewFrame";
 const ResponsiveContainer: React.FC = () => {
   const [isDark, setIsDark] = useState<boolean>(() => StorageService.loadThemeMode() === 'dark');
   const [devices, setDevices] = useState<Device[]>(() => {
-    const defaultWithIds = DeviceService.createDevicesWithIds(defaultDevices);
     const customDevices = StorageService.loadCustomDevices();
-    return [...defaultWithIds, ...customDevices];
+    return [...defaultDevices, ...customDevices];
   });
   const [selectedDevice, setSelectedDevice] = useState<Device>(() => {
     const allDevices = [
-      ...DeviceService.createDevicesWithIds(defaultDevices),
+      ...defaultDevices,
       ...StorageService.loadCustomDevices()
     ];
     const savedDeviceId = StorageService.loadSelectedDevice();
@@ -63,6 +62,8 @@ const ResponsiveContainer: React.FC = () => {
   }, [isDark]);
 
   const handleDeviceSelect = useCallback((device: Device) => {
+    console.log(device);
+
     setSelectedDevice(device);
     StorageService.saveSelectedDevice(device.id);
     window.scrollTo({ top: 780, behavior: 'smooth' });

@@ -3,12 +3,7 @@ import type { Device, DeviceCategory } from "../types";
 import { generateId } from "../utils";
 
 export class DeviceService {
-  static createDevicesWithIds(devices: Omit<Device, "id">[]): Device[] {
-    return devices.map((device) => ({
-      ...device,
-      id: generateId(),
-    }));
-  }
+
 
   static createCustomDevice(
     data: Omit<Device, "id" | "icon" | "category" | "isCustom">

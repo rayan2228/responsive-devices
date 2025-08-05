@@ -1,5 +1,15 @@
+import { defaultDevices } from "@/data";
+import { StorageService } from "@/services/StorageService";
+
 const generateId = (): string => {
-  return `device_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  const existingIds = StorageService.loadCustomDevices();
+  if (existingIds.length === 0) {
+    return (
+      Number(defaultDevices[defaultDevices.length - 1].id) + 1
+    ).toString();
+  } else {
+    return (Number(existingIds[existingIds.length - 1].id) + 1).toString();
+  }
 };
 
 const getResponsiveScale = (

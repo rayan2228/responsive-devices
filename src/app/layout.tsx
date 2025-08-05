@@ -87,7 +87,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <noscript>
+      {/* <noscript>
         <iframe
           src="https://www.googletagmanager.com/ns.html?id=GTM-MMZVGMSM"
           height="0"
@@ -100,7 +100,7 @@ export default function RootLayout({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <GoogleAnalytics gaId="G-3F2DSRTZ9P" dataLayerName='google analytics' key="google-analytics" />
-      <GoogleTagManager gtmId="GTM-MMZVGMSM" dataLayerName='google tag manager' key="google-tag-manager" />
+      <GoogleTagManager gtmId="GTM-MMZVGMSM" dataLayerName='google tag manager' key="google-tag-manager" /> */}
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
