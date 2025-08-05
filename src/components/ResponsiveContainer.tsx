@@ -1,5 +1,6 @@
 "use client"
 import { Moon, Sun } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { FaFacebookF, FaLinkedinIn, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 import { defaultDevices, themes } from "../data";
@@ -122,14 +123,15 @@ const ResponsiveContainer: React.FC = () => {
     }
   }, []);
 
-  const [copied, setCopied] = useState(false);
-  const handleShare = (width: number, height: number) => {
-    if (!url) return;
 
+
+
+  const [copied, setCopied] = useState(false);
+  const handleShare = () => {
+    if (!url) return;
     const currentUrl = new URL(window.location.origin);
     currentUrl.searchParams.set("url", url);
-    currentUrl.searchParams.set("width", width.toString());
-    currentUrl.searchParams.set("height", height.toString());
+    currentUrl.searchParams.set("device", selectedDevice.id);
     currentUrl.searchParams.set("orientation", isLandscape ? "landscape" : "portrait");
 
     navigator.clipboard.writeText(currentUrl.toString()).then(() => {
@@ -137,6 +139,22 @@ const ResponsiveContainer: React.FC = () => {
       setTimeout(() => setCopied(false), 2000);
     });
   };
+
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const deviceParam = searchParams.get('device');
+    const orientationParam = searchParams.get('orientation');
+    const urlParam = searchParams.get('url');
+    if (deviceParam && orientationParam && urlParam) {
+      const device = devices.find(d => d.id === deviceParam);
+      if (device) {
+        setSelectedDevice(device);
+        setIsLandscape(orientationParam === 'landscape');
+        setUrl(urlParam);
+      }
+    }
+  }, [devices, searchParams]);
   return (
     <div className={`min-h-screen transition-all duration-500 ${currentTheme.background} relative overflow-hidden`}>
       <div className="absolute inset-0 opacity-5">
