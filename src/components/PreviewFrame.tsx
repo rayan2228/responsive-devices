@@ -1,6 +1,7 @@
-"use client"
+"use client";
 import { Globe } from "lucide-react";
 import { useEffect, useState } from "react";
+import { FiShare2 } from "react-icons/fi";
 import type { PreviewFrameProps } from "../types";
 
 const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme, scale, url }) => {
@@ -10,6 +11,7 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme,
     const scaledHeight = height * scale;
 
     const [loading, setLoading] = useState(false);
+    const [copied, setCopied] = useState(false);
 
     useEffect(() => {
         if (url) {
@@ -19,12 +21,44 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme,
         }
     }, [url]);
 
+    const handleShare = () => {
+        if (!url) return;
+
+        const currentUrl = new URL(window.location.origin);
+        currentUrl.searchParams.set("url", url);
+        currentUrl.searchParams.set("width", width.toString());
+        currentUrl.searchParams.set("height", height.toString());
+        currentUrl.searchParams.set("orientation", isLandscape ? "landscape" : "portrait");
+
+        navigator.clipboard.writeText(currentUrl.toString()).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        });
+    };
+
     return (
         <div className="flex justify-center items-center p-8">
             <div className="relative">
+                {/* Share Button */}
+                {url && (
+                    <button
+                        onClick={handleShare}
+                        className="absolute top-3 right-3 z-20 bg-white text-sm text-slate-700 border border-slate-300 px-3 py-1 rounded-md flex items-center gap-2 hover:bg-slate-100 transition"
+                    >
+                        <FiShare2 />
+                        Share
+                    </button>
+                )}
+
+                {/* Share Copied Tooltip */}
+                {copied && (
+                    <div className="absolute top-14 right-3 z-30 bg-black text-white text-xs px-2 py-1 rounded">
+                        Link copied!
+                    </div>
+                )}
+
                 <div
-                    className={`relative rounded-3xl p-6 shadow-2xl backdrop-blur-sm ${theme.surface.includes('dark') ? 'bg-slate-900/80' : 'bg-slate-800/90'
-                        }`}
+                    className={`relative rounded-3xl p-6 shadow-2xl backdrop-blur-sm ${theme.surface.includes('dark') ? 'bg-slate-900/80' : 'bg-slate-800/90'}`}
                     style={{
                         width: scaledWidth + 48,
                         height: scaledHeight + 48
