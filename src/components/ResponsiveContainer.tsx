@@ -1,6 +1,7 @@
 "use client"
 import { Moon, Sun } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { FaFacebookF, FaLinkedinIn, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 import { defaultDevices, themes } from "../data";
 import { DeviceService } from "../services/DeviceService ";
 import { StorageService } from "../services/StorageService";
@@ -112,6 +113,13 @@ const ResponsiveContainer: React.FC = () => {
   const displayDevices = shouldShowToggle && !isExpanded
     ? activeDevices.slice(0, activeCategoryData?.defaultShowCount)
     : activeDevices;
+  const [currentUrl, setCurrentUrl] = useState<string>('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setCurrentUrl(window.location.href);
+    }
+  }, []);
 
   return (
     <div className={`min-h-screen transition-all duration-500 ${currentTheme.background} relative overflow-hidden`}>
@@ -131,6 +139,44 @@ const ResponsiveContainer: React.FC = () => {
             <p className={`text-base sm:text-lg ${currentTheme.text.secondary}`}>
               Test your websites across real-world device viewports
             </p>
+            <div className="flex items-center gap-3 mt-4 flex-wrap">
+              <span className={`text-sm ${currentTheme.text.secondary}`}>Share:</span>
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-sm text-blue-600 hover:underline"
+              >
+                <FaFacebookF size={16} />
+              </a>
+
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=Check%20out%20Responsihub!`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-sm text-blue-400 hover:underline"
+              >
+                <FaXTwitter size={16} />
+              </a>
+
+              <a
+                href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(currentUrl)}&title=Responsihub&summary=Test%20website%20responsiveness%20across%20devices`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-sm text-blue-700 hover:underline"
+              >
+                <FaLinkedinIn size={16} />
+              </a>
+
+              <a
+                href={`https://api.whatsapp.com/send?text=Check%20out%20Responsihub!%20${encodeURIComponent(currentUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-sm text-green-600 hover:underline"
+              >
+                <FaWhatsapp size={16} />
+              </a>
+            </div>
           </div>
 
           <button
