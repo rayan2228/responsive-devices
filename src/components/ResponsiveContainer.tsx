@@ -127,13 +127,14 @@ const ResponsiveContainer: React.FC = () => {
 
 
   const [copied, setCopied] = useState(false);
-  const handleShare = () => {
+  const handleShare = (width: number, height: number) => {
     if (!url) return;
     const currentUrl = new URL(window.location.origin);
     currentUrl.searchParams.set("url", url);
     currentUrl.searchParams.set("device", selectedDevice.id);
     currentUrl.searchParams.set("orientation", isLandscape ? "landscape" : "portrait");
-
+    currentUrl.searchParams.set("width", width.toString());
+    currentUrl.searchParams.set("height", height.toString());
     navigator.clipboard.writeText(currentUrl.toString()).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -146,12 +147,28 @@ const ResponsiveContainer: React.FC = () => {
     const deviceParam = searchParams.get('device');
     const orientationParam = searchParams.get('orientation');
     const urlParam = searchParams.get('url');
-    if (deviceParam && orientationParam && urlParam) {
+    const widthParam = searchParams.get('width');
+    const heightParam = searchParams.get('height');
+    if (deviceParam && orientationParam && urlParam && widthParam && heightParam) {
       const device = devices.find(d => d.id === deviceParam);
       if (device) {
         setSelectedDevice(device);
         setIsLandscape(orientationParam === 'landscape');
         setUrl(urlParam);
+      } else {
+        const newDevice = DeviceService.createCustomDevice({
+          name: 'Custom Device',
+          width: parseInt(widthParam),
+          height: parseInt(heightParam)
+        })
+        if (newDevice) {
+          const updatedDevices = [...devices, newDevice];
+          setDevices(updatedDevices);
+          setSelectedDevice(newDevice);
+          StorageService.saveCustomDevices(updatedDevices);
+          setIsLandscape(orientationParam === 'landscape');
+          setUrl(urlParam);
+        }
       }
     }
   }, [devices, searchParams]);

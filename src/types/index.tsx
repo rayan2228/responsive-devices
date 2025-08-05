@@ -69,7 +69,7 @@ interface PreviewFrameProps {
     theme: ThemeColors;
     scale: number;
     url: string | undefined;
-    handleShare: () => void;
+    handleShare: (width: number, height: number) => void;
     copied: boolean;
 }
 

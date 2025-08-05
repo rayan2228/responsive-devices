@@ -28,7 +28,7 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme,
                 {/* Share Button */}
                 {url && (
                     <button
-                        onClick={handleShare}
+                        onClick={()=>handleShare(width, height)}
                         className="absolute top-3 right-3 z-20 bg-white text-sm text-slate-700 border border-slate-300 px-3 py-1 rounded-md flex items-center gap-2 hover:bg-slate-100 transition"
                     >
                         <FiShare2 />
