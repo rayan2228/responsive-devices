@@ -20,15 +20,13 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme,
         }
     }, [url]);
 
-
-
     return (
         <div className="flex justify-center items-center p-8">
             <div className="relative">
                 {/* Share Button */}
                 {url && (
                     <button
-                        onClick={()=>handleShare(width, height)}
+                        onClick={() => handleShare(width, height)}
                         className="absolute top-3 right-3 z-20 bg-white text-sm text-slate-700 border border-slate-300 px-3 py-1 rounded-md flex items-center gap-2 hover:bg-slate-100 transition"
                     >
                         <FiShare2 />
@@ -51,10 +49,11 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme,
                     }}
                 >
                     <div
-                        className="bg-white rounded-2xl overflow-hidden shadow-inner relative"
+                        className="bg-white rounded-2xl overflow-x-auto overflow-y-hidden shadow-inner relative origin-top-left"
                         style={{
-                            width: scaledWidth,
-                            height: scaledHeight
+                            width: width,
+                            height: height,
+                            transform: `scale(${scale})`
                         }}
                     >
                         {url ? (
@@ -69,7 +68,11 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme,
                                 )}
                                 <iframe
                                     src={url}
-                                    className="w-full h-full border-0"
+                                    className="border-0"
+                                    style={{
+                                        width: `${width}px`,
+                                        height: `${height}px`
+                                    }}
                                     title="Website Preview"
                                     onLoad={() => setLoading(false)}
                                 />
@@ -77,7 +80,7 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme,
                         ) : (
                             <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
                                 <div className="text-center">
-                                    <Globe size={Math.min(64, scaledWidth * 0.1)} className="mx-auto mb-4 text-slate-400" />
+                                    <Globe size={Math.min(64, width * 0.1)} className="mx-auto mb-4 text-slate-400" />
                                     <p className="text-lg font-semibold text-slate-600 mb-2">Website Preview</p>
                                     <p className="text-sm text-slate-500 px-4">
                                         Enter a URL to see your site rendered at {width}×{height}
