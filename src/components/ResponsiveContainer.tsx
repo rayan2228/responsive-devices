@@ -174,46 +174,33 @@ const ResponsiveContainer: React.FC = () => {
   }, [devices, searchParams]);
 
 
-  const handleUrlChange = async (input: string) => {
-    setUrl(input); // Always update input
+  const handleUrlChange = (input: string) => {
+    if (errorMessage) {
+      setErrorMessage('');
+    }
 
+    // Always update input so typing works
+    setUrl(input);
+
+    // If empty, stop here
     if (!input.trim()) return;
 
-    let domain = input.trim();
-
-    // Add https:// if missing
-    if (!/^https?:\/\//i.test(domain)) {
-      domain = "https://" + domain;
-    }
-
     try {
-      // Check syntax
-      const parsed = new URL(domain);
+      let domain = input.trim();
 
-      // Try HTTPS first
-      try {
-        const res = await fetch(parsed.href, { method: "HEAD" });
-        if (res.ok) {
-          setFormattedUrl(parsed.href);
-          return;
-        }
-      } catch {
-        // HTTPS failed, try HTTP
-        const httpUrl = parsed.href.replace(/^https:/, "http:");
-        try {
-          const res = await fetch(httpUrl, { method: "HEAD" });
-          if (res.ok) {
-            setFormattedUrl(httpUrl);
-            return;
-          }
-        } catch {
-          setErrorMessage("Both HTTPS and HTTP failed");
-        }
+      // Add https:// if missing
+      if (!/^https?:\/\//i.test(domain)) {
+        domain = "https://" + domain;
       }
+
+      const parsed = new URL(domain);
+      setFormattedUrl(parsed.href);
     } catch (err) {
-      setErrorMessage("Invalid URL: " + err);
+      setErrorMessage("Invalid URL format" + err);
+      setFormattedUrl("");
     }
   };
+
 
 
   return (
