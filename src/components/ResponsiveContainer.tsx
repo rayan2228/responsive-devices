@@ -38,6 +38,8 @@ const ResponsiveContainer: React.FC = () => {
   });
   const [showCustomModal, setShowCustomModal] = useState<boolean>(false);
   const [url, setUrl] = useState<string>('');
+  const [formattedUrl, setFormattedUrl] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const [containerWidth, setContainerWidth] = useState<number>(1200);
   const [activeCategory, setActiveCategory] = useState<DeviceCategory>('mobile');
 
@@ -63,8 +65,6 @@ const ResponsiveContainer: React.FC = () => {
   }, [isDark]);
 
   const handleDeviceSelect = useCallback((device: Device) => {
-    console.log(device);
-
     setSelectedDevice(device);
     StorageService.saveSelectedDevice(device.id);
     window.scrollTo({ top: 780, behavior: 'smooth' });
@@ -172,6 +172,50 @@ const ResponsiveContainer: React.FC = () => {
       }
     }
   }, [devices, searchParams]);
+
+
+  const handleUrlChange = async (input: string) => {
+    setUrl(input); // Always update input
+
+    if (!input.trim()) return;
+
+    let domain = input.trim();
+
+    // Add https:// if missing
+    if (!/^https?:\/\//i.test(domain)) {
+      domain = "https://" + domain;
+    }
+
+    try {
+      // Check syntax
+      const parsed = new URL(domain);
+
+      // Try HTTPS first
+      try {
+        const res = await fetch(parsed.href, { method: "HEAD" });
+        if (res.ok) {
+          setFormattedUrl(parsed.href);
+          return;
+        }
+      } catch {
+        // HTTPS failed, try HTTP
+        const httpUrl = parsed.href.replace(/^https:/, "http:");
+        try {
+          const res = await fetch(httpUrl, { method: "HEAD" });
+          if (res.ok) {
+            setFormattedUrl(httpUrl);
+            return;
+          }
+        } catch {
+          setErrorMessage("Both HTTPS and HTTP failed");
+        }
+      }
+    } catch (err) {
+      setErrorMessage("Invalid URL: " + err);
+    }
+  };
+
+
   return (
     <div className={`min-h-screen transition-all duration-500 ${currentTheme.background} relative overflow-hidden`}>
       <div className="absolute inset-0 opacity-5">
@@ -295,7 +339,7 @@ const ResponsiveContainer: React.FC = () => {
             scale={scale}
             onAddCustomDevice={() => setShowCustomModal(true)}
             url={url}
-            onUrlChange={setUrl}
+            onUrlChange={handleUrlChange}
           />
         </div>
 
@@ -305,9 +349,10 @@ const ResponsiveContainer: React.FC = () => {
             isLandscape={isLandscape}
             theme={currentTheme}
             scale={scale}
-            url={url}
+            url={formattedUrl}
             handleShare={handleShare}
             copied={copied}
+            errorMessage={errorMessage}
           />
         </div>
 

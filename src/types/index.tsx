@@ -71,6 +71,7 @@ interface PreviewFrameProps {
     url: string | undefined;
     handleShare: (width: number, height: number) => void;
     copied: boolean;
+    errorMessage: string;
 }
 
 export type { ControlPanelProps, CustomDeviceForm, CustomDeviceModalProps, Device, DeviceButtonProps, DeviceCategory, PreviewFrameProps, ThemeColors, ThemeMode };

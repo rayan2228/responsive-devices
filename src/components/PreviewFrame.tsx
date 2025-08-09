@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { FiShare2 } from "react-icons/fi";
 import type { PreviewFrameProps } from "../types";
 
-const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme, scale, url, handleShare, copied }) => {
+const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme, scale, url, handleShare, copied, errorMessage }) => {
     const width = isLandscape ? device.height : device.width;
     const height = isLandscape ? device.width : device.height;
     const scaledWidth = width * scale;
@@ -78,27 +78,40 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({ device, isLandscape, theme,
                                 />
                             </div>
                         ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
-                                <div className="text-center">
-                                    <Globe size={Math.min(64, width * 0.1)} className="mx-auto mb-4 text-slate-400" />
-                                    <p className="text-lg font-semibold text-slate-600 mb-2">Website Preview</p>
-                                    <p className="text-sm text-slate-500 px-4">
-                                        Enter a URL to see your site rendered at {width}×{height}
-                                    </p>
-                                    {device.isCustom && (
-                                        <p className="text-xs text-blue-500 mt-2 font-medium">
-                                            Custom Device: {device.name}
-                                        </p>
-                                    )}
+                            errorMessage ? (
+                                <div className="w-full h-full flex items-center justify-center bg-red-50">
+                                    <div className="text-center max-w-xs px-4">
+                                        <div className="flex items-center justify-center mb-3">
+                                            <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-100 text-red-600">
+                                                ⚠️
+                                            </span>
+                                        </div>
+                                        <p className="text-base font-semibold text-red-700">Unable to load site</p>
+                                        <p className="text-sm text-red-500 mt-1">{errorMessage}</p>
+                                    </div>
                                 </div>
-                            </div>
+                            ) :
+                                <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                                    <div className="text-center">
+                                        <Globe size={Math.min(64, width * 0.1)} className="mx-auto mb-4 text-slate-400" />
+                                        <p className="text-lg font-semibold text-slate-600 mb-2">Website Preview</p>
+                                        <p className="text-sm text-slate-500 px-4">
+                                            Enter a URL to see your site rendered at {width}×{height}
+                                        </p>
+                                        {device.isCustom && (
+                                            <p className="text-xs text-blue-500 mt-2 font-medium">
+                                                Custom Device: {device.name}
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-white/10 pointer-events-none" />
                     </div>
                 </div>
                 <div className="absolute -inset-8 bg-gradient-to-r from-blue-600/15 to-purple-600/15 rounded-3xl blur-2xl opacity-60 -z-10" />
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 
