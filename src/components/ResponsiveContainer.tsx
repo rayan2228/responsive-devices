@@ -179,27 +179,33 @@ const ResponsiveContainer: React.FC = () => {
       setErrorMessage('');
     }
 
-    // Always update input so typing works
     setUrl(input);
 
-    // If empty, stop here
     if (!input.trim()) return;
 
     try {
       let domain = input.trim();
 
-      // Add https:// if missing
+      // Add protocol if missing
       if (!/^https?:\/\//i.test(domain)) {
         domain = "https://" + domain;
       }
 
       const parsed = new URL(domain);
+
+      if (parsed.protocol !== 'https:') {
+        setErrorMessage('Only HTTPS URLs are supported due to browser security policies.');
+        setFormattedUrl('');
+        return;
+      }
+
       setFormattedUrl(parsed.href);
-    } catch (err) {
-      setErrorMessage("Invalid URL format" + err);
+    } catch {
+      setErrorMessage("Invalid URL format");
       setFormattedUrl("");
     }
   };
+
 
 
 
