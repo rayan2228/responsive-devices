@@ -15,7 +15,7 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
   return (
     <div className={`flex flex-col gap-4 pt-6 border-t ${theme.border}`}>
       <div className="flex flex-col sm:flex-row gap-4">
-        <div className="flex-1">\
+        <div className="flex-1">
           <label className={`block text-sm font-medium mb-2 ${theme.text.secondary}`} id="url">
             Website URL
           </label>

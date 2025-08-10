@@ -193,12 +193,13 @@ const ResponsiveContainer: React.FC = () => {
 
       const parsed = new URL(domain);
 
-      if (parsed.protocol !== 'https:') {
-        setErrorMessage('Only HTTPS URLs are supported due to browser security policies.');
-        setFormattedUrl('');
-        return;
-      }
-
+      // if (parsed.protocol !== 'https:') {
+      //   setErrorMessage('Only HTTPS URLs are supported due to browser security policies.');
+      //   setFormattedUrl('');
+      //   return;
+      // }
+      console.log(parsed);
+      
       setFormattedUrl(parsed.href);
     } catch {
       setErrorMessage("Invalid URL format");
