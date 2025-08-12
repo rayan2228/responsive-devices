@@ -61,11 +61,11 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({
                     }}
                 >
                     <div
-                        className="bg-white rounded-2xl overflow-x-auto overflow-y-hidden shadow-inner relative origin-top-left"
+                        className="bg-white rounded-2xl overflow-hidden shadow-inner relative"
                         style={{
-                            width: width,
-                            height: height,
-                            transform: `scale(${scale})`,
+                            width: scaledWidth,
+                            height: scaledHeight,
+                            // Removed transform scale and changed overflow settings
                         }}
                     >
                         {url ? (
@@ -93,10 +93,14 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({
                                 ) : (
                                     <iframe
                                         src={url}
-                                        className="border-0"
+                                        className="border-0 z-10 relative"
                                         style={{
-                                            width: `${width}px`,
-                                            height: `${height}px`,
+                                            width: `${scaledWidth}px`,
+                                            height: `${scaledHeight}px`,
+                                            // Apply scaling and anti-aliasing improvements
+                                            imageRendering: 'auto',
+                                            WebkitFontSmoothing: 'antialiased',
+                                            MozOsxFontSmoothing: 'grayscale',
                                         }}
                                         title="Website Preview"
                                         onLoad={() => {
@@ -123,10 +127,16 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({
                                 </div>
                             </div>
                         ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                            <div
+                                className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center"
+                                style={{
+                                    width: scaledWidth,
+                                    height: scaledHeight,
+                                }}
+                            >
                                 <div className="text-center">
                                     <Globe
-                                        size={Math.min(64, width * 0.1)}
+                                        size={Math.min(64, scaledWidth * 0.1)}
                                         className="mx-auto mb-4 text-slate-400"
                                     />
                                     <p className="text-lg font-semibold text-slate-600 mb-2">Website Preview</p>
