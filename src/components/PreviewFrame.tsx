@@ -135,7 +135,7 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({
                             >
                                 <div className="text-center">
                                     <Globe
-                                        size={Math.min(64, width * 0.1)}
+                                        size={Math.min(64, scaledWidth * 0.1)}
                                         className="mx-auto mb-4 text-slate-400"
                                     />
                                     <p className="text-lg font-semibold text-slate-600 mb-2">Website Preview</p>
