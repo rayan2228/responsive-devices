@@ -16,6 +16,7 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({
 }) => {
     const width = isLandscape ? device.height : device.width;
     const height = isLandscape ? device.width : device.height;
+
     const scaledWidth = width * scale;
     const scaledHeight = height * scale;
 
@@ -25,7 +26,7 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({
     useEffect(() => {
         if (url) {
             setLoading(true);
-            setIframeError(false);  // reset iframe error on url change
+            setIframeError(false); // reset iframe error on url change
             const timer = setTimeout(() => setLoading(false), 1500);
             return () => clearTimeout(timer);
         }
@@ -56,16 +57,15 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({
                     className={`relative rounded-3xl p-6 shadow-2xl backdrop-blur-sm ${theme.surface.includes("dark") ? "bg-slate-900/80" : "bg-slate-800/90"
                         }`}
                     style={{
-                        width: scaledWidth + 48,
-                        height: scaledHeight + 48,
+                        width: width + 48,  // Exact device size + padding
+                        height: height + 48,
                     }}
                 >
                     <div
-                        className="bg-white rounded-2xl overflow-x-auto overflow-y-hidden shadow-inner relative origin-top-left"
+                        className="bg-white rounded-2xl overflow-hidden shadow-inner relative"
                         style={{
-                            width: width,
-                            height: height,
-                            transform: `scale(${scale})`,
+                            width: width,     // Exact device width
+                            height: height,   // Exact device height
                         }}
                     >
                         {url ? (
@@ -93,10 +93,13 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({
                                 ) : (
                                     <iframe
                                         src={url}
-                                        className="border-0"
+                                        className="border-0 z-10 relative"
                                         style={{
-                                            width: `${width}px`,
-                                            height: `${height}px`,
+                                            width: `${width}px`,    // Match chosen device exactly
+                                            height: `${height}px`,  // Match chosen device exactly
+                                            imageRendering: 'auto',
+                                            WebkitFontSmoothing: 'antialiased',
+                                            MozOsxFontSmoothing: 'grayscale',
                                         }}
                                         title="Website Preview"
                                         onLoad={() => {
@@ -123,7 +126,13 @@ const PreviewFrame: React.FC<PreviewFrameProps> = ({
                                 </div>
                             </div>
                         ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center">
+                            <div
+                                className="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center"
+                                style={{
+                                    width: width,
+                                    height: height,
+                                }}
+                            >
                                 <div className="text-center">
                                     <Globe
                                         size={Math.min(64, width * 0.1)}
