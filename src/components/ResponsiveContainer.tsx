@@ -194,15 +194,14 @@ const ResponsiveContainer: React.FC = () => {
       const parsed = new URL(domain);
 
       // Allow HTTPS always, and allow localhost over HTTP
-      if (
-        parsed.protocol !== 'https:' &&
-        parsed.hostname !== 'localhost' &&
-        !/^192\.168\./.test(parsed.hostname) // optional: allow local LAN IPs
-      ) {
-        setErrorMessage('Only HTTPS URLs are supported due to browser security policies.');
-        setFormattedUrl('');
-        return;
-      }
+      // if (
+      //   parsed.protocol !== 'https:' &&
+      //   parsed.hostname !== 'localhost' // optional: allow local LAN IPs
+      // ) {
+      //   setErrorMessage('Only HTTPS URLs are supported due to browser security policies.');
+      //   setFormattedUrl('');
+      //   return;
+      // }
 
       setFormattedUrl(parsed.href);
     } catch {
