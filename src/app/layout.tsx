@@ -22,6 +22,7 @@ export const metadata: Metadata = {
   description: 'Preview your designs across multiple devices with Responsihub – built for designers, developers, and QA engineers.',
   keywords: ['responsihub', 'responsive design', 'device preview', 'web design', 'UI testing', 'mockup tool'],
   authors: [{ name: 'Responsihub Team', url: 'https://www.responsihub.com' }],
+  applicationName: 'Responsihub',
   creator: 'Responsihub Team',
   generator: 'Next.js',
   metadataBase: new URL('https://www.responsihub.com'),
@@ -87,6 +88,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <meta name="google-adsense-account" content="ca-pub-6738542689498195"></meta>
       <noscript>
         <iframe
           src="https://www.googletagmanager.com/ns.html?id=GTM-MMZVGMSM"
