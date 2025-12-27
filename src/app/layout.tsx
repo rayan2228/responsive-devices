@@ -97,6 +97,8 @@ export default function RootLayout({
           style={{ display: 'none', visibility: 'hidden' }}
         />
       </noscript>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6738542689498195"
+        crossOrigin="anonymous" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
