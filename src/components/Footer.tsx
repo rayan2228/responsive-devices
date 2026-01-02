@@ -23,7 +23,7 @@ const Footer: React.FC<FooterProps> = ({ theme }) => {
                     <span className={`${theme.text.muted}`}>
                         Developed by{" "}
                         <Link
-                            href="https://www.xrodev.com/"
+                            href="https://www.linkedin.com/in/rayan2228/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`${theme.text.muted}  font-bold`}
@@ -36,9 +36,6 @@ const Footer: React.FC<FooterProps> = ({ theme }) => {
                     </Link>
                     <Link href="/terms" target="_blank" className={`hover:underline ${theme.text.muted}`}>
                         Terms & Conditions
-                    </Link>
-                    <Link href="https://www.xrodev.com/" className={`hover:underline ${theme.text.muted}`}>
-                        contact
                     </Link>
                 </div>
             </div>
