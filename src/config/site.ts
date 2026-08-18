@@ -59,8 +59,17 @@ export const siteConfig = {
     email: "contact@responsivedevices.com",
   },
 
+  /**
+   * Rendered by <GoogleAnalytics> / <GoogleTagManager> from
+   * @next/third-parties in layout.tsx, which emit the gtag.js snippet through
+   * next/script. Never hand-write the <script> tags as well — that loads
+   * gtag.js twice and double-fires every event.
+   */
   analytics: {
-    gaId: process.env.NEXT_PUBLIC_GA_ID ?? "G-3F2DSRTZ9P",
+    // G-S8LD7KGECB is the property for responsivedevices.com. It replaced
+    // G-3F2DSRTZ9P, which belonged to the responsihub.com era — that property
+    // keeps its history but no longer receives hits.
+    gaId: process.env.NEXT_PUBLIC_GA_ID ?? "G-S8LD7KGECB",
     gtmId: process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-MMZVGMSM",
   },
 
