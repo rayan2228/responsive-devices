@@ -44,8 +44,11 @@ export const siteConfig = {
   },
 
   social: {
-    x: "@responsivedev",
-    xUrl: "https://x.com/responsivedev",
+    // No `x` handle on purpose. @responsivedev was a placeholder that does not
+    // exist, and pointing twitter:site / twitter:creator at a 404 attributes
+    // every shared card to a non-existent account. The summary_large_image
+    // card works fine without it. Add the handle here and restore the two
+    // fields in layout.tsx if an account is ever registered.
     github: "https://github.com/rayan2228/responsive-devices",
     linkedin: "https://www.linkedin.com/in/rayan2228/",
   },

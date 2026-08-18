@@ -40,9 +40,9 @@ export const metadata: Metadata = {
     description: siteConfig.description,
   },
   twitter: {
+    // `site` and `creator` are omitted until a real account exists — see the
+    // note in config/site.ts. The card still renders with the OG image.
     card: "summary_large_image",
-    site: siteConfig.social.x,
-    creator: siteConfig.social.x,
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
   },
