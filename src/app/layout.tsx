@@ -1,9 +1,9 @@
+import { siteConfig } from "@/config/site";
+import { appSchema } from "@/lib/schema";
 import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
-import { siteConfig } from "@/config/site";
-import { appSchema } from "@/lib/schema";
 import "./globals.css";
 
 const inter = Inter({

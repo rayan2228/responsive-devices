@@ -65,15 +65,20 @@ export const siteConfig = {
   },
 
   /**
-   * Google Search Console verification.
+   * Google Search Console verification token for responsivedevices.com.
    *
-   * The previous token was bound to responsihub.com and does not validate on
-   * the new domain, so there is no default here. Verify the new property in
-   * Search Console, then set NEXT_PUBLIC_GOOGLE_VERIFICATION in the Vercel
-   * project — no code change needed. Until it is set, the meta tag is simply
-   * omitted rather than shipping a dead one.
+   * Safe to commit — it is served publicly in the page head, and its only
+   * power is proving domain ownership to Search Console.
+   *
+   * Next renders this via `metadata.verification.google`; do not hand-write a
+   * <meta> tag as well, or the page ends up with two.
+   *
+   * The env var overrides it, which is what to use if the property is ever
+   * re-verified and issued a new token.
    */
-  googleVerification: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION ?? null,
+  googleVerification:
+    process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION ??
+    "h0ssn_3pvhUVfHd9S-xPcXXaF6fzRu5nkqxJ00TqCAU",
 
   nav: [
     { href: "/privacy", label: "Privacy" },
