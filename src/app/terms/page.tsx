@@ -1,115 +1,152 @@
-const TermsPage: React.FC = () => {
-    return (
-        <div className="bg-black">
-            <div className="max-w-4xl mx-auto px-4 py-12 text-slate-700 dark:text-slate-300 ">
-                <h1 className="text-3xl font-bold mb-4">Terms and Conditions</h1>
-                <p className="text-sm mb-8">Last updated: July 30, 2025</p>
+import type { Metadata } from "next";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { siteConfig } from "@/config/site";
 
-                <p className="mb-6">
-                    Please read these terms and conditions carefully before using Our
-                    Service.
-                </p>
-
-                <section className="mb-10">
-                    <h2 className="text-2xl font-semibold mb-2">Interpretation and Definitions</h2>
-                    <h3 className="text-xl font-medium mt-4 mb-2">Interpretation</h3>
-                    <p className="mb-4">
-                        The words of which the initial letter is capitalized have meanings
-                        defined under the following conditions. The following definitions shall
-                        have the same meaning regardless of whether they appear in singular or
-                        in plural.
-                    </p>
-                    <h3 className="text-xl font-medium mt-4 mb-2">Definitions</h3>
-                    <p className="mb-2">For the purposes of these Terms and Conditions:</p>
-                    <ul className="list-disc ml-6 space-y-2">
-                        <li>
-                            <strong>Affiliate</strong> means an entity that controls, is
-                            controlled by or is under common control with a party, where
-                            &quot;control&quot; means ownership of 50% or more of the shares, equity
-                            interest or other securities entitled to vote for election of
-                            directors or other managing authority.
-                        </li>
-                        <li>
-                            <strong>Country</strong> refers to: Bangladesh
-                        </li>
-                        <li>
-                            <strong>Company</strong> refers to Responsihub (&quot;We&quot;, &quot;Us&quot, or &quot;Our&quot;).
-                        </li>
-                        <li>
-                            <strong>Device</strong> means any device that can access the Service
-                            such as a computer, a cellphone or a digital tablet.
-                        </li>
-                        <li>
-                            <strong>Service</strong> refers to the Website.
-                        </li>
-                        <li>
-                            <strong>Terms and Conditions</strong> means this agreement between You
-                            and the Company.
-                        </li>
-                        <li>
-                            <strong>Third-party Social Media Service</strong> means any services
-                            or content provided by a third party.
-                        </li>
-                        <li>
-                            <strong>Website</strong> refers to Responsihub,
-                            <a
-                                href="https://www.responsihub.com/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 underline dark:text-blue-400"
-                            >
-                                https://www.responsihub.com/
-                            </a>
-                        </li>
-                        <li>
-                            <strong>You</strong> means the user or legal entity accessing the
-                            Service.
-                        </li>
-                    </ul>
-                </section>
-
-                <section className="mb-10">
-                    <h2 className="text-2xl font-semibold mb-2">Acknowledgment</h2>
-                    <p className="mb-4">
-                        These are the Terms and Conditions governing the use of this Service
-                        and the agreement between You and the Company. These Terms apply to all
-                        users.
-                    </p>
-                    <p className="mb-4">
-                        By using the Service, You agree to these Terms. If You disagree, do not
-                        use the Service.
-                    </p>
-                    <p className="mb-4">
-                        You represent that you are over the age of 18.
-                    </p>
-                </section>
-
-                {/* Continue similarly for other sections like Links to Other Websites, Termination, Liability, etc. */}
-
-                <section className="mt-16 border-t pt-6 text-sm text-slate-500 dark:text-slate-400">
-                    <p>
-                        For any questions, contact us at:
-                        <br />
-                        <a
-                            href="mailto:contact@xrodev.com"
-                            className="text-blue-600 underline dark:text-blue-400"
-                        >
-                            contact@xrodev.com
-                        </a>
-                        <br />
-                        <a
-                            href="https://xrodev.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 underline dark:text-blue-400"
-                        >
-                            https://xrodev.com/
-                        </a>
-                    </p>
-                </section>
-            </div>
-        </div>
-    );
+export const metadata: Metadata = {
+  title: "Terms of Use",
+  description: `The terms covering use of ${siteConfig.name} — a free, browser-based responsive design preview tool.`,
+  alternates: { canonical: "/terms" },
 };
 
-export default TermsPage;
+const UPDATED = "18 August 2026";
+
+export default function TermsPage() {
+  return (
+    <>
+      <SiteHeader />
+
+      <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
+        <h1 className="text-h1 text-ink">Terms of Use</h1>
+        <p className="mt-2 font-mono text-[13px] text-faint">
+          Last updated {UPDATED}
+        </p>
+
+        <div className="mt-10 space-y-10 text-[15px] leading-relaxed text-muted">
+          <Section title="Acceptance">
+            <p>
+              By using{" "}
+              <a href={siteConfig.url} className="text-ink underline underline-offset-4">
+                {siteConfig.domain}
+              </a>{" "}
+              you agree to these terms. If you do not agree with them, please
+              don&rsquo;t use the service.
+            </p>
+          </Section>
+
+          <Section title="What the service is">
+            <p>
+              {siteConfig.name} is a free tool that renders a web address you
+              supply inside frames at various device dimensions, so you can check
+              how it responds. It runs in your browser. There is no account and
+              no charge.
+            </p>
+          </Section>
+
+          <Section title="Acceptable use">
+            <p>You agree not to use the service to:</p>
+            <ul className="mt-2 list-disc space-y-1.5 pl-5">
+              <li>Preview content that is illegal where you are</li>
+              <li>
+                Frame a site in order to misrepresent it, phish, or pass its
+                content off as your own
+              </li>
+              <li>
+                Attempt to overload, scrape or automate the service beyond
+                ordinary interactive use
+              </li>
+              <li>
+                Circumvent access controls on a site you are not authorised to
+                view
+              </li>
+            </ul>
+          </Section>
+
+          <Section title="Third-party content">
+            <p>
+              Any site you preview belongs to someone else. We do not host,
+              control, endorse or take responsibility for it, and their terms
+              apply to their content. Some sites decline to be framed at all,
+              which is their prerogative and not a fault in this tool.
+            </p>
+          </Section>
+
+          <Section title="Accuracy">
+            <p>
+              Viewport dimensions are accurate, and that is what your layout
+              responds to. However, previews still render using your desktop
+              browser engine, so device-specific font rendering, scrollbars,
+              touch behaviour and mobile browser chrome can differ from real
+              hardware. Test on real devices before shipping anything critical.
+            </p>
+          </Section>
+
+          <Section title="Availability and warranty">
+            <p>
+              The service is provided &ldquo;as is&rdquo; and &ldquo;as
+              available&rdquo;, without warranties of any kind. It may change,
+              break or be withdrawn at any time without notice. We do not
+              guarantee it will be uninterrupted or error-free.
+            </p>
+          </Section>
+
+          <Section title="Limitation of liability">
+            <p>
+              To the fullest extent permitted by law, we are not liable for any
+              indirect or consequential loss arising from use of the service,
+              including lost work, lost data or any defect that reaches
+              production. It is a preview aid, not a guarantee of correctness.
+            </p>
+          </Section>
+
+          <Section title="Your data">
+            <p>
+              Preferences and custom devices are stored in your own browser.
+              See the{" "}
+              <a href="/privacy" className="text-ink underline underline-offset-4">
+                Privacy Policy
+              </a>{" "}
+              for details.
+            </p>
+          </Section>
+
+          <Section title="Changes">
+            <p>
+              These terms may be updated; the date at the top reflects the last
+              revision. Continued use after a change means you accept it.
+            </p>
+          </Section>
+
+          <Section title="Contact">
+            <p>
+              Questions about these terms:{" "}
+              <a
+                href={`mailto:${siteConfig.contact.email}`}
+                className="text-ink underline underline-offset-4"
+              >
+                {siteConfig.contact.email}
+              </a>
+            </p>
+          </Section>
+        </div>
+      </main>
+
+      <SiteFooter />
+    </>
+  );
+}
+
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section>
+      <h2 className="text-[15px] font-semibold text-ink">{title}</h2>
+      <div className="mt-2 text-[14px]">{children}</div>
+    </section>
+  );
+}

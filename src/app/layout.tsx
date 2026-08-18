@@ -1,115 +1,115 @@
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
-import { SpeedInsights } from '@vercel/speed-insights/next';
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import type { Metadata, Viewport } from "next";
+import { Inter, JetBrains_Mono } from "next/font/google";
+import { siteConfig } from "@/config/site";
+import { appSchema } from "@/lib/schema";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
+  variable: "--font-jetbrains",
+  display: "swap",
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: 'Responsihub – Responsive Device Preview Tool',
-    template: '%s | Responsihub',
+    default: `${siteConfig.name} — ${siteConfig.tagline}`,
+    template: `%s · ${siteConfig.name}`,
   },
-  description: 'Preview your designs across multiple devices with Responsihub – built for designers, developers, and QA engineers.',
-  keywords: ['responsihub', 'responsive design', 'device preview', 'web design', 'UI testing', 'mockup tool'],
-  authors: [{ name: 'Responsihub Team', url: 'https://www.responsihub.com' }],
-  applicationName: 'Responsihub',
-  creator: 'Responsihub Team',
-  generator: 'Next.js',
-  metadataBase: new URL('https://www.responsihub.com'),
+  description: siteConfig.description,
+  keywords: [...siteConfig.keywords],
+  applicationName: siteConfig.name,
+  authors: [{ name: siteConfig.author.name, url: siteConfig.author.url }],
+  creator: siteConfig.author.name,
+  generator: "Next.js",
   openGraph: {
-    title: 'Responsihub – Responsive Design Preview Tool',
-    description: 'Test your designs live on real devices with Responsihub.',
-    url: 'https://www.responsihub.com',
-    siteName: 'Responsihub',
-    images: [
-      {
-        url: 'https://www.responsihub.com/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Responsihub Preview',
-      },
-    ],
-    type: 'website',
-    locale: 'en_US',
+    type: "website",
+    locale: "en_US",
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    description: siteConfig.description,
   },
   twitter: {
-    card: 'summary_large_image',
-    site: '@responsihub',
-    creator: '@responsihub',
-    title: 'Responsihub – Responsive Design Tool',
-    description: 'Easily test your UI designs on various devices.',
-    images: ['https://www.responsihub.com/twitter-card.png'],
-  },
-  icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-  },
-  verification: {
-    google: 'pODC2wrngSGaNlkVCpYajNJvI748aMcdqLTKpxtRIpc',
+    card: "summary_large_image",
+    site: siteConfig.social.x,
+    creator: siteConfig.social.x,
+    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    description: siteConfig.description,
   },
   alternates: {
-    canonical: 'https://www.responsihub.com/',
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
 };
 
-const structuredData = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "Responsihub",
-  url: "https://www.responsihub.com",
-  operatingSystem: "All",
-  applicationCategory: "DesignApplication",
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "USD"
-  },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "4.9",
-    reviewCount: "218"
-  }
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#08090a" },
+  ],
 };
+
+/**
+ * Applies the persisted theme before first paint.
+ *
+ * Must be inline and synchronous in <head> — `next/script` with
+ * `beforeInteractive` still injects after the head is streamed, which is
+ * visible as a flash of the wrong theme on hard reload.
+ */
+const themeScript = `(function(){try{
+var s=localStorage.getItem('rd:theme');
+var d=s==='system'?matchMedia('(prefers-color-scheme:dark)').matches:s!=='light';
+document.documentElement.classList.toggle('dark',d);
+document.documentElement.style.colorScheme=d?'dark':'light';
+}catch(e){document.documentElement.classList.add('dark')}
+try{
+if(/Mac|iPhone|iPad|iPod/.test(navigator.platform||navigator.userAgent))
+document.documentElement.classList.add('is-apple');
+}catch(e){}})()`;
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <meta name="google-adsense-account" content="ca-pub-6738542689498195"></meta>
-      <noscript>
-        <iframe
-          src="https://www.googletagmanager.com/ns.html?id=GTM-MMZVGMSM"
-          height="0"
-          width="0"
-          style={{ display: 'none', visibility: 'hidden' }}
+    <html
+      lang="en"
+      className={`${inter.variable} ${jetbrainsMono.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(appSchema()) }}
         />
-      </noscript>
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6738542689498195"
-        crossOrigin="anonymous" />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-      />
-      <GoogleAnalytics gaId="G-3F2DSRTZ9P" dataLayerName='google analytics' key="google-analytics" />
-      <GoogleTagManager gtmId="GTM-MMZVGMSM" dataLayerName='google tag manager' key="google-tag-manager" />
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      </head>
+      <body className="bg-canvas text-ink font-sans antialiased">
+        <noscript>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${siteConfig.analytics.gtmId}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         {children}
         <SpeedInsights />
+        <GoogleAnalytics gaId={siteConfig.analytics.gaId} />
+        <GoogleTagManager gtmId={siteConfig.analytics.gtmId} />
       </body>
     </html>
   );

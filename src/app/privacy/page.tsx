@@ -1,117 +1,149 @@
-const PrivacyPolicyPage: React.FC = () => {
-    return (
-        <div className="bg-black">
-            <div className="max-w-4xl mx-auto px-4 py-12 text-slate-700 dark:text-slate-300">
-                <h1 className="text-3xl font-bold mb-4">Privacy Policy</h1>
-                <p className="text-sm mb-8">Last updated: July 30, 2025</p>
+import type { Metadata } from "next";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { siteConfig } from "@/config/site";
 
-                <p className="mb-6">
-                    This Privacy Policy describes Our policies and procedures on the collection, use, and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.
-                </p>
-
-                <p className="mb-6">
-                    We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy.
-                </p>
-
-                <section className="mb-10">
-                    <h2 className="text-2xl font-semibold mb-2">Interpretation and Definitions</h2>
-                    <h3 className="text-xl font-medium mt-4 mb-2">Interpretation</h3>
-                    <p className="mb-4">
-                        The words of which the initial letter is capitalized have meanings defined under the following conditions. These definitions shall have the same meaning regardless of whether they appear in singular or plural.
-                    </p>
-                    <h3 className="text-xl font-medium mt-4 mb-2">Definitions</h3>
-                    <p className="mb-2">For the purposes of this Privacy Policy:</p>
-                    <ul className="list-disc ml-6 space-y-2">
-                        <li><strong>Account</strong> means a unique account created for You to access our Service.</li>
-                        <li><strong>Affiliate</strong> refers to an entity that controls, is controlled by, or is under common control with a party.</li>
-                        <li><strong>Company</strong> refers to Responsihub (&quot;We&quot;, &quot;Us&quot, or &quot;Our&quot;).</li>
-                        <li><strong>Cookies</strong> are small files placed on Your device by a website, containing details of Your browsing history.</li>
-                        <li><strong>Country</strong> refers to: Bangladesh</li>
-                        <li><strong>Device</strong> means any device that can access the Service.</li>
-                        <li><strong>Personal Data</strong> is any information that relates to an identified or identifiable individual.</li>
-                        <li><strong>Service</strong> refers to the Website.</li>
-                        <li><strong>Service Provider</strong> means third-party companies or individuals employed by the Company to assist in providing the Service.</li>
-                        <li><strong>Usage Data</strong> refers to data collected automatically, like IP address, browser type, pages visited, etc.</li>
-                        <li><strong>Website</strong> refers to Responsihub,
-                            <a
-                                href="https://www.responsihub.com/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-blue-600 underline dark:text-blue-400"
-                            >
-                                https://www.responsihub.com/
-                            </a>
-                        </li>
-                        <li><strong>You</strong> means the individual accessing the Service, or a company or legal entity they represent.</li>
-                    </ul>
-                </section>
-
-                <section className="mb-10">
-                    <h2 className="text-2xl font-semibold mb-2">Collecting and Using Your Personal Data</h2>
-                    <h3 className="text-xl font-medium mt-4 mb-2">Types of Data Collected</h3>
-                    <h4 className="text-lg font-semibold mt-3 mb-1">Personal Data</h4>
-                    <p className="mb-4">We may ask You to provide personally identifiable information such as your email or name.</p>
-
-                    <h4 className="text-lg font-semibold mt-3 mb-1">Usage Data</h4>
-                    <p className="mb-4">Usage Data is collected automatically and may include IP address, browser type, time spent on pages, etc.</p>
-
-                    <h4 className="text-lg font-semibold mt-3 mb-1">Tracking Technologies and Cookies</h4>
-                    <p className="mb-4">We use cookies and similar tracking technologies to monitor activity and store preferences.</p>
-                </section>
-
-                <section className="mb-10">
-                    <h2 className="text-2xl font-semibold mb-2">Use of Your Personal Data</h2>
-                    <ul className="list-disc ml-6 space-y-2">
-                        <li>To provide and maintain the Service</li>
-                        <li>To manage Your Account</li>
-                        <li>To perform contracts</li>
-                        <li>To contact You</li>
-                        <li>To provide You with offers and news</li>
-                        <li>To manage Your requests</li>
-                        <li>For business transfers</li>
-                        <li>For analytics and improvements</li>
-                    </ul>
-                </section>
-
-                <section className="mb-10">
-                    <h2 className="text-2xl font-semibold mb-2">Retention, Transfer, and Deletion</h2>
-                    <p className="mb-4">Your Personal Data is retained as long as necessary, may be transferred securely, and You may request its deletion.</p>
-                </section>
-
-                <section className="mb-10">
-                    <h2 className="text-2xl font-semibold mb-2">Children’s Privacy</h2>
-                    <p className="mb-4">We do not knowingly collect information from anyone under the age of 13. Contact us if you believe your child has provided us data.</p>
-                </section>
-
-                <section className="mb-10">
-                    <h2 className="text-2xl font-semibold mb-2">Changes to This Privacy Policy</h2>
-                    <p className="mb-4">We may update this Privacy Policy and notify You via email or a prominent notice. Please review this page periodically.</p>
-                </section>
-
-                <section className="mt-16 border-t pt-6 text-sm text-slate-500 dark:text-slate-400">
-                    <p>
-                        For any questions, contact us at:
-                        <br />
-                        <a
-                            href="mailto:contact@xrodev.com"
-                            className="text-blue-600 underline dark:text-blue-400"
-                        >
-                            contact@xrodev.com
-                        </a>
-                        <br />
-                        <a
-                            href="https://xrodev.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 underline dark:text-blue-400"
-                        >
-                            https://xrodev.com/
-                        </a>
-                    </p>
-                </section>
-            </div>
-        </div>
-    );
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description: `How ${siteConfig.name} handles data. In short: there is no backend, no account, and nothing you preview is ever sent to us.`,
+  alternates: { canonical: "/privacy" },
 };
 
-export default PrivacyPolicyPage;
+const UPDATED = "18 August 2026";
+
+export default function PrivacyPage() {
+  return (
+    <>
+      <SiteHeader />
+
+      <main className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
+        <h1 className="text-h1 text-ink">Privacy Policy</h1>
+        <p className="mt-2 font-mono text-[13px] text-faint">
+          Last updated {UPDATED}
+        </p>
+
+        <div className="mt-10 space-y-10 text-[15px] leading-relaxed text-muted">
+          <section className="rounded-panel border border-subtle bg-surface p-5">
+            <h2 className="text-[15px] font-semibold text-ink">The short version</h2>
+            <p className="mt-2 text-[14px]">
+              {siteConfig.name} runs entirely in your browser. There is no
+              account to create, no server that stores your data, and the
+              websites you preview are loaded directly by your own browser —
+              they never pass through us. The only data collected is anonymous
+              usage analytics.
+            </p>
+          </section>
+
+          <Section title="Who we are">
+            <p>
+              {siteConfig.name} (&ldquo;we&rdquo;, &ldquo;us&rdquo;) operates{" "}
+              <a href={siteConfig.url} className="text-ink underline underline-offset-4">
+                {siteConfig.domain}
+              </a>
+              . This policy explains what happens to information when you use it.
+            </p>
+          </Section>
+
+          <Section title="What we do not collect">
+            <p>
+              We do not ask for or store your name, email address, or any other
+              personal detail, because there is nowhere to enter one. There are
+              no accounts, no sign-in, and no contact forms.
+            </p>
+            <p className="mt-3">
+              We do not receive, log or store the URLs you preview. When you
+              enter an address, your browser loads that site directly inside a
+              frame. Nothing about it is transmitted to us.
+            </p>
+          </Section>
+
+          <Section title="What is stored in your browser">
+            <p>
+              Your custom viewport sizes, your selected devices, your layout and
+              zoom preferences, and your light or dark theme choice are saved in
+              your browser&rsquo;s local storage. This data stays on your device.
+              It is not synced, not transmitted, and not readable by us. Clearing
+              your site data removes it.
+            </p>
+          </Section>
+
+          <Section title="Analytics">
+            <p>
+              We use Google Analytics and Google Tag Manager to understand how
+              many people use the tool and which features are worth keeping.
+              These set cookies and collect standard usage data — approximate
+              location, browser and device type, pages visited and time on page.
+              This is aggregate and not used to identify you.
+            </p>
+            <p className="mt-3">
+              You can opt out with the{" "}
+              <a
+                href="https://tools.google.com/dlpage/gaoptout"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-ink underline underline-offset-4"
+              >
+                Google Analytics opt-out add-on
+              </a>{" "}
+              or by blocking analytics in your browser. The tool works exactly
+              the same either way.
+            </p>
+          </Section>
+
+          <Section title="Third-party sites">
+            <p>
+              Previewed websites are third parties, and their own privacy
+              policies apply to them. Loading a site here is equivalent to
+              visiting it in a tab, and it may set its own cookies in your
+              browser.
+            </p>
+          </Section>
+
+          <Section title="Children">
+            <p>
+              This tool is intended for developers and designers. We do not
+              knowingly collect information from anyone under 13 — and, as above,
+              we do not collect personal information from anyone.
+            </p>
+          </Section>
+
+          <Section title="Changes">
+            <p>
+              If this policy changes, the date at the top of this page changes
+              with it. Material changes will be noted on the homepage.
+            </p>
+          </Section>
+
+          <Section title="Contact">
+            <p>
+              Questions about this policy:{" "}
+              <a
+                href={`mailto:${siteConfig.contact.email}`}
+                className="text-ink underline underline-offset-4"
+              >
+                {siteConfig.contact.email}
+              </a>
+            </p>
+          </Section>
+        </div>
+      </main>
+
+      <SiteFooter />
+    </>
+  );
+}
+
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section>
+      <h2 className="text-[15px] font-semibold text-ink">{title}</h2>
+      <div className="mt-2 text-[14px]">{children}</div>
+    </section>
+  );
+}

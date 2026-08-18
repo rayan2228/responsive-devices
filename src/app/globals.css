@@ -1,307 +1,220 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
+/* Class-driven dark mode instead of the prefers-color-scheme default, so the
+   toggle can override the OS setting. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Semantic values. Plain CSS custom properties — these are what flip between
+   modes. They are deliberately NOT inside @theme; the mapping happens below.
+
+   Refined dark: near-zero background contrast between layers, with visible
+   1px hairlines doing the edge definition. Depth comes from borders and
+   background steps, never from glow.
+   ───────────────────────────────────────────────────────────────────────── */
 :root {
-  --bg-deep: #050814;
-  --bg-mid: #080d1e;
-  --bg-surface: rgba(10, 15, 35, 0.85);
-  --bg-glass: rgba(255, 255, 255, 0.035);
-  --bg-glass-hover: rgba(255, 255, 255, 0.06);
+  color-scheme: light;
 
-  --accent-cyan: #00d4ff;
-  --accent-violet: #7c3aed;
-  --accent-pink: #e040fb;
-  --accent-emerald: #00e5a0;
+  --canvas: #ffffff;
+  --surface: #fafafb;
+  --elevated: #f2f3f5;
+  --subtle: #e6e7ea;
+  --strong: #d3d5da;
 
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-accent: rgba(0, 212, 255, 0.3);
+  --ink: #111214;
+  --muted: #5b606a;
+  --faint: #8a8f98;
 
-  --text-primary: #f0f4ff;
-  --text-secondary: #8892b0;
-  --text-muted: #4a5568;
+  --accent: #4e5bd8;
+  --accent-hover: #414ec8;
+  --accent-soft: color-mix(in oklab, #4e5bd8 10%, transparent);
+  --on-accent: #ffffff;
 
-  --glow-cyan: 0 0 30px rgba(0, 212, 255, 0.15), 0 0 60px rgba(0, 212, 255, 0.05);
-  --glow-violet: 0 0 30px rgba(124, 58, 237, 0.2), 0 0 60px rgba(124, 58, 237, 0.08);
+  --danger: #d6323a;
+  --success: #16915c;
+  --warning: #b4690e;
 }
 
-* {
-  box-sizing: border-box;
+.dark {
+  color-scheme: dark;
+
+  --canvas: #08090a;
+  --surface: #0d0e10;
+  --elevated: #151619;
+  --subtle: #1f2023;
+  --strong: #2e3035;
+
+  --ink: #edeef0;
+  --muted: #9ba1a9;
+  --faint: #63676e;
+
+  --accent: #6e79f0;
+  --accent-hover: #7f89f6;
+  --accent-soft: color-mix(in oklab, #6e79f0 14%, transparent);
+  --on-accent: #ffffff;
+
+  --danger: #f2555a;
+  --success: #3fcf8e;
+  --warning: #f5a524;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   Map into Tailwind's namespaces.
+
+   `inline` is load-bearing: without it Tailwind compiles `bg-surface` to
+   `var(--color-surface)`, which resolves against :root and so ignores any
+   nested .dark scope. With `inline`, it compiles to `var(--surface)` and
+   resolves per element at any nesting depth.
+   ───────────────────────────────────────────────────────────────────────── */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-subtle: var(--subtle);
+  --color-strong: var(--strong);
+
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--on-accent);
+
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains);
+}
+
+/* Static tokens — no var() indirection, so no `inline` needed. */
+@theme {
+  --radius-panel: 14px;
+  --radius-control: 10px;
+
+  /* cv11 gives Inter a single-storey a/g; tnum stops the 1920×1080 readouts
+     jittering as digits change. A large share of the "refined" feel. */
+  --font-sans--font-feature-settings: "cv11", "ss01", "tnum";
+  --font-mono--font-feature-settings: "tnum";
+
+  --text-display: clamp(2.25rem, 5.5vw, 3.75rem);
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.035em;
+  --text-display--font-weight: 600;
+
+  --text-h1: 2rem;
+  --text-h1--line-height: 1.15;
+  --text-h1--letter-spacing: -0.025em;
+  --text-h1--font-weight: 600;
+
+  --text-h2: 1.375rem;
+  --text-h2--line-height: 1.3;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h2--font-weight: 600;
+
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--letter-spacing: 0.12em;
+  --text-eyebrow--font-weight: 600;
+
+  --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.06), 0 8px 24px -12px rgb(0 0 0 / 0.14);
+  --shadow-pop: 0 8px 16px -6px rgb(0 0 0 / 0.14), 0 24px 48px -16px rgb(0 0 0 / 0.22);
+  --shadow-frame: 0 24px 64px -24px rgb(0 0 0 / 0.45);
+
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  --animate-slide-up: slide-up 0.4s var(--ease-out-quart) both;
+  --animate-fade-in: fade-in 0.3s var(--ease-out-quart) both;
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ─── Base ──────────────────────────────────────────────────────────────── */
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'DM Sans', sans-serif;
-  background-color: var(--bg-deep);
-  color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ─── Noise overlay ─────────────────────────────────────── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.4;
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
 }
 
-/* ─── Scrollbar ─────────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: var(--bg-mid); }
-::-webkit-scrollbar-thumb { background: rgba(0, 212, 255, 0.25); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(0, 212, 255, 0.5); }
-
-/* ─── Glass panel ───────────────────────────────────────── */
-.glass-panel {
-  background: var(--bg-glass);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--border-glass);
-  border-radius: 16px;
+/* Consistent focus treatment. Accent is used here and in exactly three other
+   places — primary action, selected device, active tab. Nowhere else. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
-.glass-panel-hover:hover {
-  background: var(--bg-glass-hover);
-  border-color: var(--border-accent);
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--strong);
+  border-radius: 99px;
+  border: 3px solid var(--canvas);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--faint);
 }
 
-/* ─── Glow effects ──────────────────────────────────────── */
-.glow-cyan { box-shadow: var(--glow-cyan); }
-.glow-violet { box-shadow: var(--glow-violet); }
-
-/* ─── Gradient text ─────────────────────────────────────── */
-.gradient-text-cyan {
-  background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.stagger-children > * {
+  animation: var(--animate-slide-up);
 }
-
-.gradient-text-warm {
-  background: linear-gradient(135deg, #e040fb 0%, #ff6b35 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ─── Heading font ──────────────────────────────────────── */
-.font-display { font-family: 'Syne', sans-serif; }
-.font-mono { font-family: 'JetBrains Mono', monospace; }
-
-/* ─── Animations ────────────────────────────────────────── */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes pulse-ring {
-  0% { transform: scale(0.9); opacity: 1; }
-  100% { transform: scale(1.4); opacity: 0; }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes orbit {
-  from { transform: rotate(0deg) translateX(60px) rotate(0deg); }
-  to { transform: rotate(360deg) translateX(60px) rotate(-360deg); }
-}
-
-@keyframes scan-line {
-  0% { top: -4px; }
-  100% { top: 100%; }
-}
-
-.animate-slide-up {
-  animation: slide-up 0.5s ease forwards;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.4s ease forwards;
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.shimmer-text {
-  background: linear-gradient(90deg, #00d4ff, #7c3aed, #e040fb, #00d4ff);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 4s linear infinite;
-}
-
-/* ─── Device frame ──────────────────────────────────────── */
-.device-frame {
-  background: linear-gradient(145deg, rgba(15, 20, 40, 0.95), rgba(8, 12, 28, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow:
-    0 0 0 1px rgba(0, 212, 255, 0.1),
-    0 40px 80px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-}
-
-/* ─── Scan line effect on iframe ────────────────────────── */
-.scan-container::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.4), transparent);
-  pointer-events: none;
-  animation: scan-line 3s linear infinite;
-  z-index: 5;
-}
-
-/* ─── Neon button ───────────────────────────────────────── */
-.btn-neon {
-  position: relative;
-  background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(124, 58, 237, 0.1));
-  border: 1px solid rgba(0, 212, 255, 0.3);
-  color: #00d4ff;
-  transition: all 0.3s ease;
-  overflow: hidden;
-}
-
-.btn-neon::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(124, 58, 237, 0.15));
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.btn-neon:hover::before { opacity: 1; }
-.btn-neon:hover {
-  border-color: rgba(0, 212, 255, 0.6);
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2), inset 0 0 20px rgba(0, 212, 255, 0.05);
-  transform: translateY(-1px);
-}
-
-.btn-neon:active { transform: translateY(0); }
-
-/* ─── Active device button ──────────────────────────────── */
-.device-btn-active {
-  background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(124, 58, 237, 0.15));
-  border-color: rgba(0, 212, 255, 0.5) !important;
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.15), inset 0 0 20px rgba(0, 212, 255, 0.05);
-}
-
-/* ─── Tab active ────────────────────────────────────────── */
-.tab-active {
-  color: #00d4ff !important;
-  border-bottom: 2px solid #00d4ff;
-  background: linear-gradient(180deg, transparent, rgba(0, 212, 255, 0.05));
-}
-
-/* ─── Input field ───────────────────────────────────────── */
-.input-neon {
-  background: rgba(5, 8, 20, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--text-primary);
-  transition: all 0.3s ease;
-}
-
-.input-neon:focus {
-  outline: none;
-  border-color: rgba(0, 212, 255, 0.5);
-  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.08), 0 0 20px rgba(0, 212, 255, 0.1);
-  background: rgba(0, 212, 255, 0.03);
-}
-
-.input-neon::placeholder {
-  color: #374151;
-}
-
-/* ─── Stagger children ──────────────────────────────────── */
 .stagger-children > *:nth-child(1) { animation-delay: 0ms; }
-.stagger-children > *:nth-child(2) { animation-delay: 60ms; }
-.stagger-children > *:nth-child(3) { animation-delay: 120ms; }
-.stagger-children > *:nth-child(4) { animation-delay: 180ms; }
-.stagger-children > *:nth-child(5) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 40ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 80ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 160ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 200ms; }
 
-/* ─── Ambient orbs ──────────────────────────────────────── */
-.ambient-orb-1 {
-  position: fixed;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 212, 255, 0.04) 0%, transparent 70%);
-  top: -200px;
-  right: -100px;
-  pointer-events: none;
-  z-index: 0;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
-.ambient-orb-2 {
-  position: fixed;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(124, 58, 237, 0.05) 0%, transparent 70%);
-  bottom: -150px;
-  left: -100px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ─── Loading shimmer ───────────────────────────────────── */
-.loading-shimmer {
-  background: linear-gradient(90deg,
-    rgba(255,255,255,0.03) 25%,
-    rgba(0, 212, 255, 0.06) 50%,
-    rgba(255,255,255,0.03) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
-
-/* ─── Section divider ───────────────────────────────────── */
-.divider-glow {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
-}
-
-/* ─── Viewport badge ────────────────────────────────────── */
-.viewport-badge {
-  font-family: 'JetBrains Mono', monospace;
-  background: rgba(0, 212, 255, 0.08);
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  color: #00d4ff;
-  padding: 4px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  letter-spacing: 0.05em;
-}
-
-/* ─── Status dot ────────────────────────────────────────── */
-.status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #00e5a0;
-  box-shadow: 0 0 8px rgba(0, 229, 160, 0.6);
-  animation: pulse-ring 2s ease-out infinite;
-}
+/* ─── Platform-conditional keycaps ──────────────────────────────────────── */
+/* `is-apple` is set on <html> by the inline script in layout.tsx, so the
+   correct cap is chosen before paint rather than after hydration. */
+.kbd-mod-apple { display: none; }
+.is-apple .kbd-mod-apple { display: inline-flex; }
+.is-apple .kbd-mod-other { display: none; }
