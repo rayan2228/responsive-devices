@@ -70,7 +70,10 @@ export const siteConfig = {
     // G-3F2DSRTZ9P, which belonged to the responsihub.com era — that property
     // keeps its history but no longer receives hits.
     gaId: process.env.NEXT_PUBLIC_GA_ID ?? "G-S8LD7KGECB",
-    gtmId: process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-MMZVGMSM",
+    // GTM-PBGS65KL is the container for responsivedevices.com, replacing
+    // GTM-MMZVGMSM from the responsihub.com era. layout.tsx renders both the
+    // script and the <noscript> iframe from this one value.
+    gtmId: process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-PBGS65KL",
   },
 
   /**
