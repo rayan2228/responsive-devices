@@ -23,16 +23,20 @@
 
   --ink: #111214;
   --muted: #5b606a;
-  --faint: #8a8f98;
+  /* All text tokens clear WCAG AA (4.5:1) against canvas, surface AND
+     elevated. The tertiary tier is used at 11-13px, which counts as normal
+     text, so it gets no large-text exemption. Verified values, do not lighten
+     without re-checking. */
+  --faint: #6a6f78;
 
   --accent: #4e5bd8;
   --accent-hover: #414ec8;
   --accent-soft: color-mix(in oklab, #4e5bd8 10%, transparent);
   --on-accent: #ffffff;
 
-  --danger: #d6323a;
-  --success: #16915c;
-  --warning: #b4690e;
+  --danger: #d03138;
+  --success: #137e50;
+  --warning: #a25e0d;
 }
 
 .dark {
@@ -46,7 +50,8 @@
 
   --ink: #edeef0;
   --muted: #9ba1a9;
-  --faint: #63676e;
+  /* See the note in :root — 4.95:1 against the lightest dark surface. */
+  --faint: #82868d;
 
   --accent: #6e79f0;
   --accent-hover: #7f89f6;
