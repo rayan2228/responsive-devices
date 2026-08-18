@@ -8,12 +8,21 @@
 export const siteConfig = {
   name: "Responsive Devices",
   shortName: "ResponsiveDevices",
+
+  /** Display form, without the `www.` prefix — used in the OG image footer. */
   domain: "responsivedevices.com",
 
-  // Apex, no `www`. The host redirects www → apex, so this is the one canonical
-  // origin. Previously `metadataBase` said www while share links used
-  // window.location.origin, which meant shared URLs disagreed with canonicals.
-  url: "https://responsivedevices.com",
+  /**
+   * Canonical origin, and it must be the `www.` form.
+   *
+   * The live host 308-redirects the apex to www, so `www` is the URL that
+   * actually serves. A canonical pointing at the apex would name a URL that
+   * immediately redirects, which defeats the purpose of declaring one.
+   *
+   * If the redirect is ever flipped to www → apex, change this to match — the
+   * rule is that this string names whatever URL responds 200.
+   */
+  url: "https://www.responsivedevices.com",
 
   tagline: "Preview any site on every device.",
   description:
