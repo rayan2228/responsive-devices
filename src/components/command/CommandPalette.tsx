@@ -23,6 +23,9 @@ import type { Zoom } from "@/types";
 
 const GROUP_ORDER = ["View", "Actions", "Devices"];
 
+/** Stable identity so the memos below short-circuit while the palette is shut. */
+const EMPTY_ITEMS: Item[] = [];
+
 interface Item {
   id: string;
   label: string;
@@ -48,13 +51,18 @@ export function CommandPalette() {
     setIndex(0);
   };
 
+  // Gated on `open`. This subscribes to the whole preview state, so without
+  // the gate every keystroke in the URL field, every zoom change and every
+  // device click rebuilt ~30 command objects and re-ranked them — while the
+  // palette was closed and none of it was rendered.
   const items = useMemo(
-    () => buildItems(state, dispatch, close),
+    () => (open ? buildItems(state, dispatch, close) : EMPTY_ITEMS),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [state],
+    [open, state],
   );
 
   const results = useMemo(() => {
+    if (items.length === 0) return EMPTY_ITEMS;
     const ranked = rank(query, items, (i) => `${i.label} ${i.keywords ?? ""}`);
     // Ranking mixes groups by score; re-group with a stable sort so relevance
     // order survives inside each group but headings never repeat.
@@ -160,7 +168,7 @@ export function CommandPalette() {
                 aria-selected={active}
                 data-index={i}
                 onClick={item.run}
-                onMouseMove={() => setIndex(i)}
+                onMouseMove={() => { if (i !== index) setIndex(i); }}
                 className={cn(
                   "flex cursor-pointer items-center gap-2.5 rounded-control px-2.5 py-2 text-[13px]",
                   active ? "bg-elevated text-ink" : "text-muted",
