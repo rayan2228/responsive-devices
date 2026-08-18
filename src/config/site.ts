@@ -37,19 +37,31 @@ export const siteConfig = {
   social: {
     x: "@responsivedev",
     xUrl: "https://x.com/responsivedev",
-    github: "https://github.com/rayan2228/responsihub",
+    github: "https://github.com/rayan2228/responsive-devices",
     linkedin: "https://www.linkedin.com/in/rayan2228/",
   },
 
+  // Referenced by the privacy policy and terms as the contact of record, so
+  // mail on this address needs to actually be routed somewhere you read.
   contact: {
-    email: "contact@xrodev.com",
-    url: "https://xrodev.com/",
+    email: "contact@responsivedevices.com",
   },
 
   analytics: {
     gaId: process.env.NEXT_PUBLIC_GA_ID ?? "G-3F2DSRTZ9P",
     gtmId: process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-MMZVGMSM",
   },
+
+  /**
+   * Google Search Console verification.
+   *
+   * The previous token was bound to responsihub.com and does not validate on
+   * the new domain, so there is no default here. Verify the new property in
+   * Search Console, then set NEXT_PUBLIC_GOOGLE_VERIFICATION in the Vercel
+   * project — no code change needed. Until it is set, the meta tag is simply
+   * omitted rather than shipping a dead one.
+   */
+  googleVerification: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION ?? null,
 
   nav: [
     { href: "/privacy", label: "Privacy" },

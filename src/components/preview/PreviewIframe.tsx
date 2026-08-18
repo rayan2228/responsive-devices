@@ -2,6 +2,7 @@
 
 import { ExternalLink, Globe, ShieldAlert } from "lucide-react";
 import { memo, useEffect, useRef, useState } from "react";
+import { isKnownBlocker } from "@/lib/embed";
 
 interface PreviewIframeProps {
   url: string;
@@ -41,6 +42,12 @@ function PreviewIframeImpl({
       setStatus("idle");
       return;
     }
+    // Known blockers answer immediately rather than making the user watch a
+    // spinner for eight seconds to reach the same conclusion.
+    if (isKnownBlocker(url)) {
+      setStatus("blocked");
+      return;
+    }
     setStatus("loading");
     timer.current = setTimeout(() => {
       setStatus((s) => (s === "loading" ? "blocked" : s));
@@ -51,6 +58,16 @@ function PreviewIframeImpl({
 
   if (!url) {
     return <EmptyState width={width} height={height} />;
+  }
+
+  // Don't mount the frame for a site we already know will refuse it — the
+  // request would be wasted and the error document would flash first.
+  if (status === "blocked" && isKnownBlocker(url)) {
+    return (
+      <div className="relative h-full w-full">
+        <BlockedState url={url} />
+      </div>
+    );
   }
 
   return (

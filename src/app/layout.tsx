@@ -49,6 +49,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  ...(siteConfig.googleVerification
+    ? { verification: { google: siteConfig.googleVerification } }
+    : {}),
   robots: {
     index: true,
     follow: true,
@@ -97,7 +100,17 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(appSchema()) }}
         />
       </head>
-      <body className="bg-canvas text-ink font-sans antialiased">
+      {/*
+        Browser extensions (ColorZilla's `cz-shortcut-listen`, Grammarly's
+        `data-gr-*`, and friends) attach attributes to <body> before React
+        hydrates, which React reports as a mismatch. This suppresses one level
+        only — the body element's own attributes — so real mismatches anywhere
+        in the tree below are still surfaced.
+      */}
+      <body
+        className="bg-canvas text-ink font-sans antialiased"
+        suppressHydrationWarning
+      >
         <noscript>
           <iframe
             src={`https://www.googletagmanager.com/ns.html?id=${siteConfig.analytics.gtmId}`}
