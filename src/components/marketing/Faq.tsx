@@ -15,7 +15,7 @@ export function Faq() {
 
       <h2 className="text-h2 text-ink">Questions</h2>
 
-      <div className="mt-8 max-w-2xl divide-y divide-subtle border-y border-subtle">
+      <div className="mt-8 w-full divide-y divide-subtle border-y border-subtle">
         {faqItems.map((item) => (
           <details key={item.question} className="group">
             <summary
